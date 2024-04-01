@@ -130,30 +130,30 @@ function drawLeftMountain(ctx: CanvasRenderingContext2D, fillColor: ColorsType, 
     ctx.moveTo(...currPos.getPosition());
 
     // 1 vert
-    currPos.increaseBoth(0.03, 0.03);
+    currPos.increaseBoth(0.05, 0.05);
     ctx.lineTo(...currPos.getPosition());
 
     // 2 vert
     currPos.increaseX(0.06);
-    currPos.decreaseY(0.02);
+    currPos.decreaseY(0.05);
     ctx.lineTo(...currPos.getPosition());
     
     // 3 vert
-    currPos.increaseBoth(0.2, 0.2);
+    currPos.increaseBoth(0.22, 0.35);
     ctx.lineTo(...currPos.getPosition());
     
     // 4 vert
-    currPos.increaseX(0.1);
-    currPos.decreaseY(0.05);
+    currPos.increaseX(0.07);
+    currPos.decreaseY(0.1);
     ctx.lineTo(...currPos.getPosition());
     
     // 5 vert
-    currPos.increaseX(0.18);
-    currPos.decreaseY(0.05);
+    currPos.increaseX(0.14);
+    currPos.decreaseY(0.07);
     ctx.lineTo(...currPos.getPosition());
     
     // 6 vert
-    currPos.increaseBoth(0.17, 0.18);
+    currPos.increaseBoth(0.17, 0.38);
     ctx.lineTo(...currPos.getPosition());
 
     // 7 vert
