@@ -74,10 +74,9 @@ function drawRect(ctx: CanvasRenderingContext2D, fillValue: ColorParam, rectCoor
 
 // Stars
 
-function drawStar(ctx: CanvasRenderingContext2D, fillColor: ColorsType, strokeColor: ColorsType, centerX: number, centerY: number, radius: number) {
+function drawStar(ctx: CanvasRenderingContext2D, fillColor: ColorsType, centerX: number, centerY: number, radius: number) {
 
     ctx.fillStyle = colors[fillColor];
-    ctx.strokeStyle = colors[strokeColor];
 
     ctx.moveTo(centerX + radius, centerY);
     ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
@@ -89,7 +88,7 @@ function drawStar(ctx: CanvasRenderingContext2D, fillColor: ColorsType, strokeCo
 function drawMultipleStars(
     ctx: CanvasRenderingContext2D, 
     count: number, 
-    colors: [fillColor: ColorsType, strokeColor: ColorsType], 
+    fillColor: ColorsType, 
     coordBorders: [minX: number, maxX: number, minY: number, maxY: number], 
     radius: number,
 ) {
@@ -97,9 +96,6 @@ function drawMultipleStars(
     const [minX, maxX, minY, maxY] = coordBorders;
     // horizontal span for 1 star
     const horizontalItemSpan = maxX / count;
-
-    // colors
-    const [fillColor, strokeColor] = colors;
 
     for (let i = 0; i < count; ++i) {
         let currentMinXBorder = horizontalItemSpan * i;
@@ -113,19 +109,26 @@ function drawMultipleStars(
         const starXCoord = Math.floor(Math.random() * (currentMaxXBorder - currentMinXBorder)) + currentMinXBorder;
         const starYCoord = Math.floor(Math.random() * (maxY - minY)) + minY;
 
-        drawStar(ctx, fillColor, strokeColor, starXCoord, starYCoord, radius);
+        drawStar(ctx, fillColor, starXCoord, starYCoord, radius);
     }
 }
 
 
 // mountains
-function drawLeftMountain(ctx: CanvasRenderingContext2D, fillColor: ColorsType, coords: FigureCoords) {
+export interface MountainCoords {
+    x1: number;
+    y1: number;
+    x2: number;
+    y2: number;
+}
+
+function drawLeftMountain(ctx: CanvasRenderingContext2D, fillColor: ColorsType, coords: MountainCoords) {
 
     ctx.fillStyle = colors[fillColor];
     ctx.beginPath();
 
     // current position state (to relative coords)
-    const currPos = new PositionState(coords.x, coords.y, coords.width, coords.height);
+    const currPos = new PositionState(coords.x1, coords.y1, coords.x2, coords.y2);
 
     ctx.moveTo(...currPos.getPosition());
 
@@ -173,8 +176,64 @@ function drawLeftMountain(ctx: CanvasRenderingContext2D, fillColor: ColorsType, 
 
 
 // right mountain
-function drawRightMountain(ctx: CanvasRenderingContext2D, fillColor: ColorsType, coords: FigureCoords) {
+function drawRightMountain(ctx: CanvasRenderingContext2D, fillColor: ColorsType, coords: MountainCoords) {
 
+    ctx.fillStyle = colors[fillColor];
+    ctx.beginPath();
+
+    // declare position state
+    // y in reverse order
+    // starting from bottom left angle
+    // decreasing y, increasing x
+    const currPos = new PositionState(coords.x1, coords.y2, coords.x2, coords.y1, false, true);
+
+    ctx.moveTo(...currPos.getPosition());
+
+    // 1 vert
+    currPos.increaseX(0.1);
+    currPos.decreaseY(0.1);
+    ctx.lineTo(...currPos.getPosition());
+
+    // 2 vert
+    currPos.increaseBoth(0.1, 0.02);
+    ctx.lineTo(...currPos.getPosition());
+
+    // 3 vert
+    currPos.increaseX(0.15);
+    currPos.decreaseY(0.25);
+    ctx.lineTo(...currPos.getPosition());
+
+    // 4 vert
+    currPos.increaseBoth(0.05, 0.05);
+    ctx.lineTo(...currPos.getPosition());
+
+    // 5 vert
+    currPos.increaseX(0.15);
+    currPos.decreaseY(0.35);
+    ctx.lineTo(...currPos.getPosition());
+
+    // 6 vert
+    currPos.increaseBoth(0.14, 0);
+    ctx.lineTo(...currPos.getPosition());
+
+    // 7 vert
+    currPos.increaseX(0.14);
+    currPos.decreaseY(0.35);
+    ctx.lineTo(...currPos.getPosition());
+
+    // 8 vert
+    currPos.increaseBoth(0.05, 0.05);
+    ctx.lineTo(...currPos.getPosition());
+
+    // 9 end vert
+    // over-/underflow are intentional
+    currPos.increaseX(1);
+    currPos.decreaseY(1);
+    ctx.lineTo(...currPos.getPosition()); 
+
+    ctx.lineTo(currPos.currentX, coords.y2);
+    ctx.closePath();
+    ctx.fill();
 }
 
 

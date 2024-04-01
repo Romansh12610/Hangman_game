@@ -7,7 +7,7 @@ import {
     drawLeftMountain,
     drawRightMountain,
 } from "@/utils/canvas/canvasUtils";
-import type { FigureCoords } from "@/utils/canvas/canvasUtils";
+import type { FigureCoords, MountainCoords } from "@/utils/canvas/canvasUtils";
 
 
 
@@ -34,8 +34,8 @@ export function main(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
     drawMultipleStars(
         ctx, 
         10, 
-        ['white', 'gray'], 
-        [skyRectCoords.width * 0.05, skyRectCoords.width * 0.95, skyRectCoords.height * 0.08, skyRectCoords.height * 0.7], 
+        'white', 
+        [skyRectCoords.width * 0.05, skyRectCoords.width * 0.95, skyRectCoords.height * 0.08, skyRectCoords.height * 0.55], 
         4,
     );
 
@@ -56,17 +56,17 @@ export function main(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
 
     // mountains
     ctx.save();
-
+    
     const mountainWidth = canvas.width * 0.4;
     const leftMountainYStart = skyRectCoords.height * 0.5;
     const leftMountainHeight = skyRectCoords.height;
 
     // left mountain
-    const leftMountainCoords: FigureCoords = {
-        x: 0,
-        y: leftMountainYStart,
-        width: mountainWidth,
-        height: leftMountainHeight, 
+    const leftMountainCoords: MountainCoords = {
+        x1: 0,
+        y1: leftMountainYStart,
+        x2: mountainWidth,
+        y2: leftMountainHeight, 
     }
 
     drawLeftMountain(
@@ -76,11 +76,15 @@ export function main(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
     );
 
     // right mountain
-    const rightMountainCoords: FigureCoords = {
-        x: canvas.width,
-        y: leftMountainYStart,
-        width: mountainWidth,
-        height: leftMountainHeight, 
+    const rightMountainXStart = canvas.width - mountainWidth;
+    const rightMountainYStart = skyRectCoords.height * 0.5;
+    const rightMountainYEnd = skyRectCoords.height;
+
+    const rightMountainCoords: MountainCoords = {
+        x1: rightMountainXStart,
+        y1: rightMountainYStart,
+        x2: canvas.width,
+        y2: rightMountainYEnd, 
     }
 
     drawRightMountain(

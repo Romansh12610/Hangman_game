@@ -20,6 +20,9 @@ export class PositionState {
         // distance by difference
         this.deltaX = Math.abs(endX - startX);
         this.deltaY = Math.abs(endY - startY);
+        if (isYReversed) {
+            console.log(`deltaX: ${this.deltaX} ; deltaY: ${this.deltaY}`);
+        }
         // state
         this.currentX = startX;
         this.currentY = startY;
@@ -108,6 +111,8 @@ export class PositionState {
             this.currentY = this.startY;
         }
         else if (this.isYReversed && this.currentY < this.endY) {
+            console.log('here');
+            console.log('y = ', this.endY);
             this.currentY = this.endY;
         }
     }
