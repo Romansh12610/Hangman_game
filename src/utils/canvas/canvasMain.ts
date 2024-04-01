@@ -2,33 +2,90 @@ import {
     resizeCanvas, 
     setupLinearGradient, 
     drawRect,
-    drawStar, 
+    drawMultipleStars, 
+    applyShadow,
+    drawLeftMountain,
+    drawRightMountain,
 } from "@/utils/canvas/canvasUtils";
+import type { FigureCoords } from "@/utils/canvas/canvasUtils";
+
+
 
 export function main(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
     // resizing & coords
     resizeCanvas(canvas);
 
     // sky rect
-    const skyGradient = setupLinearGradient(ctx, [0, 0, canvas.width * 0.08, canvas.height], ['darkBlue', 'midBlue', 'cyan'], [0, 0.55, 0.7]);
+    const skyRectCoords: FigureCoords = {
+        x: 0,
+        y: 0,
+        width: canvas.width,
+        height: canvas.height * 0.75,
+    };
 
-    ctx.save();
-    ctx.translate(-canvas.width * 0.2, 0);
-    ctx.rotate(5 * Math.PI / 180 * -1);
-    ctx.shadowBlur = 20;
-    ctx.shadowColor = "#0af";
+    const skyGradient = setupLinearGradient(ctx, [0, 0, 0, skyRectCoords.height], ['darkBlue', 'midBlue', 'cyan'], [0, 0.6, 0.86]);
 
-    drawRect(ctx, skyGradient, 0, 0, canvas.width * 1.5, canvas.height - canvas.height * 0.25);
-
-    ctx.restore();
-
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = "#fff";
+    drawRect(ctx, skyGradient, skyRectCoords);
 
     // stars
-    for (let i = 0; i < 10; ++i) {
-        const starX = Math.floor(Math.random() * canvas.width * 0.85) + canvas.width * 0.1;
-        const starY = Math.floor(Math.random() * (canvas.height * 0.6)) + canvas.height * 0.05;
-        drawStar(ctx, 'white', starX, starY, 5);
+    ctx.save();
+    applyShadow(ctx, 7, 'white', 0, 0);
+
+    drawMultipleStars(
+        ctx, 
+        10, 
+        ['white', 'gray'], 
+        [skyRectCoords.width * 0.05, skyRectCoords.width * 0.95, skyRectCoords.height * 0.08, skyRectCoords.height * 0.7], 
+        4,
+    );
+
+
+    // bottom - road rect
+    ctx.restore();
+    ctx.save();
+    
+    const roadRectCoords: FigureCoords = {
+        x: 0,
+        y: skyRectCoords.height,
+        width: canvas.width,
+        height: canvas.height - skyRectCoords.height,
     }
+
+    drawRect(ctx, "purple", roadRectCoords);
+
+
+    // mountains
+    ctx.save();
+
+    const mountainWidth = canvas.width * 0.4;
+    const leftMountainYStart = skyRectCoords.height * 0.5;
+    const leftMountainHeight = skyRectCoords.height;
+
+    // left mountain
+    const leftMountainCoords: FigureCoords = {
+        x: 0,
+        y: leftMountainYStart,
+        width: mountainWidth,
+        height: leftMountainHeight, 
+    }
+
+    drawLeftMountain(
+        ctx,
+        "mountainBlue",
+        leftMountainCoords,
+    );
+
+    // right mountain
+    const rightMountainCoords: FigureCoords = {
+        x: canvas.width,
+        y: leftMountainYStart,
+        width: mountainWidth,
+        height: leftMountainHeight, 
+    }
+
+    drawRightMountain(
+        ctx,
+        "mountainBlue",
+        rightMountainCoords,
+    );
 }
