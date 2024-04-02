@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { main } from "@/utils/canvas/canvasMain";
 
-function displayBackground() {
-    const canvas = document.getElementById('c') as HTMLCanvasElement;
+const canvasRef = ref<HTMLCanvasElement | null>(null);
+
+function displayBackground(canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext('2d');
     if (!ctx) {
         return;
@@ -12,12 +13,24 @@ function displayBackground() {
     main(ctx, canvas);
 }
 
-onMounted(displayBackground);
+function handleResizeEvent(canvas: HTMLCanvasElement | null) {
+    if (!canvas) return;
+    displayBackground(canvas);
+}
+
+onMounted(() => {
+    // should not happen
+    if (canvasRef.value == null) return;
+    
+    displayBackground(canvasRef.value);
+    // listen on resize screen
+    window.addEventListener('resize', () => handleResizeEvent(canvasRef.value));
+});
 
 </script>
 
 <template>
-    <canvas id="c">
+    <canvas ref="canvasRef">
         Beautiful night background
     </canvas>
 </template>
@@ -27,5 +40,6 @@ onMounted(displayBackground);
         position: fixed;
         top: 0;
         left: 0;
+        z-index: -100;
     }
 </style>
