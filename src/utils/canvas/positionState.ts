@@ -111,8 +111,6 @@ export class PositionState {
             this.currentY = this.startY;
         }
         else if (this.isYReversed && this.currentY < this.endY) {
-            console.log('here');
-            console.log('y = ', this.endY);
             this.currentY = this.endY;
         }
     }

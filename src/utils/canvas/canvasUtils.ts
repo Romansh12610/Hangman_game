@@ -11,6 +11,7 @@ export {
     applyShadow,
     drawLeftMountain,
     drawRightMountain,
+    drawStripe
 };
 
 // Colors
@@ -234,6 +235,59 @@ function drawRightMountain(ctx: CanvasRenderingContext2D, fillColor: ColorsType,
     ctx.lineTo(currPos.currentX, coords.y2);
     ctx.closePath();
     ctx.fill();
+}
+
+
+// Stripes
+export interface StripeCoords {
+    x1: number;
+    x2: number;
+    // left side
+    leftYStart: number;
+    leftYEnd: number;
+    // right side
+    rightYStart: number;
+    rightYEnd: number;
+}
+
+// main func
+function drawStripe(ctx: CanvasRenderingContext2D, fillColor: ColorsType, coords: StripeCoords) {
+
+    const { x1, x2, leftYStart, leftYEnd, rightYStart, rightYEnd } = coords;
+
+    ctx.fillStyle = colors[fillColor];
+    ctx.beginPath();
+    ctx.moveTo(x1, leftYStart);
+
+    // 1 curve
+    drawCurve(ctx, x1, leftYStart, x2, rightYStart);
+    ctx.lineTo(x2, rightYEnd);
+
+    // 2 curve (bottom)
+    ctx.moveTo(x1, leftYStart);
+    ctx.lineTo(x1, leftYEnd);
+    drawCurve(ctx, x1, leftYEnd, x2, rightYEnd);
+
+    // TEMP
+    ctx.fill();
+}
+
+
+// helper for stripe
+function drawCurve(ctx: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number) {
+
+    const xDistance = x2 - x1;
+    const deltaY = y2 - y1;
+    // const to add slope
+    const deltaAdd = deltaY / 2;
+    // control points
+    const cp1x = xDistance / 3;
+    const cp1y = y1 + (deltaY / 3) + deltaAdd;
+
+    const cp2x = xDistance / 3 * 2;
+    const cp2y = y1 + (deltaY / 3 * 2) + deltaAdd;
+
+    ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x2, y2);
 }
 
 
