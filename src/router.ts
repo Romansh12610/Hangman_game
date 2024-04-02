@@ -1,5 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
-import EntryScreen from "@/components/EntryScreen.vue"
+import EntryScreen from "@/views/EntryScreen.vue";
 
 const router = createRouter({
     history: createWebHistory(),

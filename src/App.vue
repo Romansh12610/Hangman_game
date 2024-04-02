@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import CanvasBackground from './components/CanvasBackground.vue'
+    import CanvasBackground from '@/components/CanvasBackground.vue'
     import { RouterView } from 'vue-router'
 </script>
 
