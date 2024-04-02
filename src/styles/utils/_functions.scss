@@ -1,0 +1,13 @@
+@use 'sass:math' as m;
+
+@function rem($pxCount, $unit: rem, $basis: 16) {
+    @return #{m.div($pxCount, $basis)}#{$unit};
+}
+
+// find left property for positioning smaller element inside container
+@function getStartPos($elCoord, $containerCoord) {
+    $deltaCoord: $containerCoord - $elCoord;
+    $halfDelta: m.div($deltaCoord, 2);
+
+    @return $halfDelta;
+}

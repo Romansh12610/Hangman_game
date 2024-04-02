@@ -1,0 +1,17 @@
+@use 'functions' as *;
+
+// layoutsify
+@mixin rowFlex($justify: stretch, $align: stretch, $gap: 0) {
+    display: flex;
+    justify-content: $justify;
+    align-items: $align;
+    gap: $gap;
+};
+
+@mixin colFlex($align: stretch, $justify: stretch, $gap: 0) {
+    display: flex;
+    flex-direction: column;
+    justify-content: $justify;
+    align-items: $align;
+    gap: $gap;
+};

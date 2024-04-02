@@ -10,6 +10,13 @@
 	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 	line-height: 1.5;
 	font-weight: 400;
+
+	// colors
+	--blue-light: hsl(219, 100%, 59%);
+	--blue-mid: hsl(230, 70%, 52%);
+	--blue-mid-op: hsla(230, 70%, 52%, 0.829);
+	--blue-dark: hsl(230, 96%, 18%);
+	--blue-dark-op: hsla(230, 100%, 24%, 0.831);
 }
 
 body {

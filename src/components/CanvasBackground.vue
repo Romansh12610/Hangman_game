@@ -30,13 +30,13 @@ onMounted(() => {
 </script>
 
 <template>
-    <canvas ref="canvasRef">
+    <canvas ref="canvasRef" id="cv">
         Beautiful night background
     </canvas>
 </template>
 
 <style scoped lang="scss">
-    #c {
+    #cv {
         position: fixed;
         top: 0;
         left: 0;
