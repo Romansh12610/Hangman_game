@@ -16,5 +16,7 @@
         @include colFlex(center);
         min-height: 100vh;
         min-width: 60vw;
+        
+        perspective: rem(700);
     }
 </style>

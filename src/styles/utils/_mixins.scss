@@ -1,6 +1,6 @@
 @use 'functions' as *;
 
-// layoutsify
+// layout
 @mixin rowFlex($justify: stretch, $align: stretch, $gap: 0) {
     display: flex;
     justify-content: $justify;
@@ -15,3 +15,11 @@
     align-items: $align;
     gap: $gap;
 };
+
+// font
+@mixin fontDefault($size: 30) {
+    font-family: Mouse Memoirs, ui-sans-serif, system-ui,sans-serif, "Apple Color Emoji","Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji";
+	line-height: 1.5;
+	font-weight: 400;
+    font-size: rem($size);
+}

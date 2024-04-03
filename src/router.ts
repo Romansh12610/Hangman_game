@@ -1,12 +1,12 @@
 import { createWebHistory, createRouter } from "vue-router";
-import EntryScreen from "@/views/EntryScreen.vue";
+import EntryView from "@/views/EntryView.vue";
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
             path: '/',
-            component: EntryScreen,
+            component: EntryView,
         }
     ],
 });

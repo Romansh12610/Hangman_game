@@ -11,3 +11,8 @@
 
     @return $halfDelta;
 }
+
+// division
+@function div($n1, $n2) {   
+    @return m.div($n1, $n2);
+}

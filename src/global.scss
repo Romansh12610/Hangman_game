@@ -6,17 +6,28 @@
     box-sizing: border-box;
 }
 
+button {
+	cursor: pointer;
+}
+
 :root {
-	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-	line-height: 1.5;
-	font-weight: 400;
+	@font-face {
+		font-family: 'Mouse Memoirs';
+		src: url('/src/assets/fonts/MouseMemoirs-Regular.ttf');
+	}
 
 	// colors
+	--white: hsl(0, 0%, 100%);
+	--black: hsl(0, 0%, 0%);
 	--blue-light: hsl(219, 100%, 59%);
+	--blue-light-op: hsl(219, 88%, 67%);
 	--blue-mid: hsl(230, 70%, 52%);
 	--blue-mid-op: hsla(230, 70%, 52%, 0.829);
 	--blue-dark: hsl(230, 96%, 18%);
 	--blue-dark-op: hsla(230, 100%, 24%, 0.831);
+	--pink: hsl(300, 100%, 82%);
+	--purple-light: hsl(288, 81%, 45%);
+	--cyan: hsl(197, 100%, 63%);
 }
 
 body {
