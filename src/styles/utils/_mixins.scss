@@ -25,14 +25,10 @@
 }
 
 // animations
-@mixin a_slideInVertical() {
-    animation: slideInVert ;
 
-    @keyframes slideInVert {
-        
-    }
-}
 
+
+// components
 @mixin btn_shadow_border($yOffset, $xOffset) {
     background-color: var(--pink);
     border: rem(3) solid var(--blue-dark);

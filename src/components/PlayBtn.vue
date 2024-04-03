@@ -1,5 +1,15 @@
+<script setup lang="ts">
+    import { useRouter } from 'vue-router';
+    import { RoutePaths } from '@/router';
+
+    const router = useRouter();
+    function navigateToPickMenu() {
+        router.push(RoutePaths.PICK_CATEGORY);
+    }
+</script>
+
 <template>
-    <button class="play-btn">
+    <button class="play-btn" @click="navigateToPickMenu">
         <div class="play-btn__gradient"></div>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 67 64"
             width="67" height="64"
