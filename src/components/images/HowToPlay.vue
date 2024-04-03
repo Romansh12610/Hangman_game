@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 
     const props = defineProps({
-        scale: Number,
+        scale: String,
     });
 
     const svgScaleProperty = computed(() => `scale(${props.scale})`);

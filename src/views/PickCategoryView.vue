@@ -36,7 +36,7 @@
 <template>
     <section class="pick-section">
         <BackLink :href="RoutePaths.ROOT" style="position: absolute; left: 0;" />
-        <PickCategory scale="3" style="margin-top: 2.5rem" />
+        <PickCategory scale="2.7" style="margin-top: 2rem" />
         <Spinner v-if="isLoading" />
         <div v-else="data" class="pick-section__categories">
         </div>
