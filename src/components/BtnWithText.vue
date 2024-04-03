@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+    import { computed } from 'vue';
+    import { RouterLink } from 'vue-router';
 
     const props = defineProps({
         btnText: String,
         big: Boolean,
+        href: String,
     });
 
     const btnMode = computed(() => props.big ? 'large' : 'small');
@@ -11,9 +13,9 @@ import { computed } from 'vue';
 </script>
 
 <template>
-    <button class="btn" :data-mode="btnMode">
+    <RouterLink class="btn" :data-mode="btnMode" :to="href">
         <p class="btn__text">{{ props.btnText }}</p>
-    </button>
+    </RouterLink>
 </template>
 
 <style scoped lang="scss">
@@ -50,7 +52,7 @@ import { computed } from 'vue';
             // hover
             &:hover {
                 box-shadow: inset -8px -3px 4px 2px var(--cyan);
-                
+
                 & > .btn__text {
                     transform: skew(-15deg) scale(1.05);
                 }

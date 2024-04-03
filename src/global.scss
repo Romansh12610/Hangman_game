@@ -1,3 +1,5 @@
+@use 'ut' as *;
+
 *,
 *::before,
 *::after {
@@ -8,6 +10,10 @@
 
 button {
 	cursor: pointer;
+}
+
+a {
+	text-decoration: none;
 }
 
 :root {
@@ -28,9 +34,13 @@ button {
 	--pink: hsl(300, 100%, 82%);
 	--purple-light: hsl(288, 81%, 45%);
 	--cyan: hsl(197, 100%, 63%);
+
+	--block-title: hsl(250, 69%, 27%);
+	--block-desc: hsl(250, 35%, 62%);
 }
 
 body {
+	font-family: Mouse Memoirs, ui-sans-serif, system-ui,sans-serif, "Apple Color Emoji","Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji";
 	margin: 0;
 	display: flex;
 	justify-content: center;

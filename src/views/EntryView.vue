@@ -4,6 +4,7 @@
     import MenuModal from "../components/MenuModal.vue";
     import BtnWithText from "../components/BtnWithText.vue";
     import { reactive, ref } from 'vue'
+    import { RoutePaths } from "@/router"
 
     const logoScalars = reactive({
         x: 1.1,
@@ -19,7 +20,7 @@
         <Logo :scale-x="logoScalars.x" :scale-y="logoScalars.y" />
         <PlayBtn :scale="playBtnScale" :rotate="0" 
         style="margin-bottom: 1.9rem" />
-        <BtnWithText btn-text="How to play" />
+        <BtnWithText btn-text="How to play" :href="RoutePaths.HOW_TO_PLAY_VIEW" />
     </MenuModal>
 </template>
 
