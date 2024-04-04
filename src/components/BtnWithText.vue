@@ -61,6 +61,8 @@
 
         // large mode
         &[data-mode=large] {
+            @include btn_shadow_border(15, 8, --cyan, --pink);
+
             padding: 1.25em 1.5em;
             border-radius: rem(35);
 

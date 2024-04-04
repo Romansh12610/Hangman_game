@@ -10,8 +10,3 @@ export type CategoryData = {
         ]
     }
 }
-
-
-export interface WordsStoreState {
-    words: CategoryData['categories'] | null;
-};
