@@ -6,6 +6,7 @@
     import BackLink from '@/components/BackLink.vue';
     import { RoutePaths } from '@/router';
     import WordGuessed from '@/components/WordGuessed.vue';
+    import Keyboard from '@/components/Keyboard.vue';
 
     interface RouteParams {
         category: CategoryNames;
@@ -41,6 +42,7 @@
         <!-- word displaing -->
         <WordGuessed />
         <!-- keyboard displaying -->
+        <Keyboard />
     </section>
 </template>
 
@@ -52,6 +54,8 @@
 
         padding-top: rem(30);
         width: 100%;
+        max-width: 80vw;
+        overflow: visible;
         min-height: 100vh;
 
         &__top-wrapper {

@@ -34,6 +34,8 @@
     }
 
     .letter {
+        @include colFlex(center, center);
+        
         background-color: var(--blue-mid);
         border-radius: rem(20);
         min-width: rem(70);
