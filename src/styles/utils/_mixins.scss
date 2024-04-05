@@ -30,14 +30,16 @@
 
 // components
 @mixin btn_shadow_border($yOffset, $xOffset, $bg_color_var: --pink, $shadow_color_var: --blue-light-op, $border_color_var: --blue-dark) {
+
     background-color: var(#{$bg_color_var});
     border: rem(3) solid var(#{$border_color_var});
     border-bottom-width: rem(10);
     box-shadow: inset #{$xOffset}#{px} #{$yOffset}#{px} 5px 2px var(#{$shadow_color_var});
-    transition: transform 0.48s ease-in-out, box-shadow 0.48s ease-in-out, border 0.48s ease-in-out;
+    transition: transform 0.48s ease-in-out, box-shadow 0.48s ease-in-out, border 0.48s ease-in-out, border-width 0.48s ease-in-out;
     
     // hover state
     &:hover {
         box-shadow: inset #{-$xOffset}#{px} #{-$yOffset}#{px} 5px 2px var(#{$shadow_color_var});
+        border-width: rem(10) rem(5) rem(3);
     }
 }

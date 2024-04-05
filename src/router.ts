@@ -2,12 +2,13 @@ import { createWebHistory, createRouter } from "vue-router"
 import EntryView from "@/views/EntryView.vue"
 import HowToPlayView from "@/views/HowToPlayView.vue"
 import PickCategoryView from "@/views/PickCategoryView.vue"
+import PlayView from "@/views/PlayView.vue";
 
 export enum RoutePaths {
     ROOT = '/',
     HOW_TO_PLAY_VIEW = '/how_to',
     PICK_CATEGORY = '/pick_cat',
-    PLAY_SCREEN = '/play',
+    PLAY_SCREEN = '/play/:category',
 }
 
 const router = createRouter({
@@ -28,10 +29,11 @@ const router = createRouter({
             path: RoutePaths.PICK_CATEGORY,
             component: PickCategoryView,
         },
-        /* {
+        {
             name: "Play screen",
             path: RoutePaths.PLAY_SCREEN,
-        } */
+            component: PlayView,
+        }
     ],
 });
 

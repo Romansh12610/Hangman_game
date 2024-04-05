@@ -45,7 +45,7 @@
             <div v-else="store.categories" class="pick-section__categories">
                 <BtnWithText v-for="categoryName in store.categoryNames" 
                     :btn-text="categoryName"
-                    :href="categoryName"
+                    :href="`/play/${categoryName}`"
                     big
                 />
             </div>

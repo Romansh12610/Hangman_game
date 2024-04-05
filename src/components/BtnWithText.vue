@@ -40,19 +40,16 @@
 
         // small mode
         &[data-mode=small] {
+            @include btn_shadow_border(5, 5, --blue-light, --pink);
+
             padding: 0.25em 1em;
             border-radius: rem(25);
-            border-bottom-width: rem(8);
-            box-shadow: inset 3px 8px 4px 2px var(--cyan);
-
             & > .btn__text {
                 font-size: rem(30);
             }
 
             // hover
             &:hover {
-                box-shadow: inset -8px -3px 4px 2px var(--cyan);
-
                 & > .btn__text {
                     transform: skew(-15deg) scale(1.05);
                 }
@@ -61,7 +58,7 @@
 
         // large mode
         &[data-mode=large] {
-            @include btn_shadow_border(15, 8, --cyan, --pink);
+            @include btn_shadow_border(15, 8, --blue-light, --pink);
 
             padding: 1.25em 1.5em;
             border-radius: rem(35);
