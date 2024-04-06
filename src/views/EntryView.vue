@@ -23,5 +23,3 @@
         <BtnWithText btn-text="How to play" :href="RoutePaths.HOW_TO_PLAY_VIEW" />
     </MenuModal>
 </template>
-
-<style scoped lang="scss"></style>

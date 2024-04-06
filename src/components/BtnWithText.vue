@@ -6,16 +6,27 @@
         btnText: String,
         big: Boolean,
         href: String,
+        // for callback attachment
+        isRestart: Boolean,
+        // for styles
+        isQuitBtn: Boolean,
     });
 
+    const emits = defineEmits(['restart']);
     const btnMode = computed(() => props.big ? 'large' : 'small');
 
 </script>
 
 <template>
-    <RouterLink class="btn" :data-mode="btnMode" :to="href">
+    <RouterLink v-if="!props.isRestart" class="btn" :data-mode="btnMode" :to="href" :data-quit="props.isQuitBtn">
         <p class="btn__text">{{ props.btnText }}</p>
     </RouterLink>
+    <!-- if need restart game -->
+    <button v-else-if="props.isRestart" class="btn" :data-mode="btnMode"
+        @click="$emit('restart')"
+    >
+        <p class="btn__text">{{ props.btnText }}</p>
+    </button>
 </template>
 
 <style scoped lang="scss">
@@ -38,9 +49,18 @@
             transition: transform 0.4s ease-in-out;
         }
 
+        // for quit btn
+        &[data-quit=true] > .btn__text {
+            color: var(--blue-dark);
+        }
+
         // small mode
         &[data-mode=small] {
             @include btn_shadow_border(5, 5, --blue-light, --pink);
+            // for quit btn
+            &[data-quit=true] {
+                @include btn_shadow_border(5, 5, --pink, --blue-light-op);
+            }
 
             padding: 0.25em 1em;
             border-radius: rem(25);

@@ -8,6 +8,8 @@
     import WordGuessed from '@/components/WordGuessed.vue';
     import Keyboard from '@/components/Keyboard.vue';
     import Healthbar from '@/components/Healthbar.vue';
+    import EndGameModal from '@/components/EndGameModal.vue';
+    // import { watch } from 'vue';
 
     interface RouteParams {
         category: CategoryNames;
@@ -24,6 +26,8 @@
         store.setupCurrentWord(categoryName);
     });
 
+    // check win / lose states
+    const store = useWordsStore();
 </script>
 
 <template>
@@ -41,6 +45,10 @@
         <WordGuessed />
         <!-- keyboard displaying -->
         <Keyboard />
+        <!-- end game menu -->
+        <EndGameModal v-if="store.isPlayerWin" mode="win" :current-category="categoryName" />
+        <EndGameModal v-else-if="store.isPlayerLose" mode="lose"
+        :current-category="categoryName" />
     </section>
 </template>
 

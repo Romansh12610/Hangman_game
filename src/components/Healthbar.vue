@@ -43,6 +43,13 @@
                 }
             }, 700);
         }
+        // when restart
+        else if (newValue === 100) {
+            if (healthBar.value) {
+                currentElWidth.value = initialElWidth.value;
+                healthBar.value.style.width = initialElWidth.value + 'px';
+            }
+        }
     });
 </script>
 
@@ -62,17 +69,18 @@
         @include rowFlex(center, center, rem(20));
 
         &__track {
-            @include rowFlex(center, center);
+            @include rowFlex(flex-start, center);
             background-color: var(--white);
             min-width: rem(150);
             height: rem(30);
             border-radius: rem(20);
             position: relative;
+            padding-inline: 5%;
 
             & #health_track {
                 background-color: var(--green);
                 min-height: 60%;
-                width: 90%;
+                width: 100%;
                 border-radius: rem(20);
                 transition: width 0.7s ease-in-out, background-color 0.2s ease-in-out;
             }

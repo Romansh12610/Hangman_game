@@ -29,7 +29,7 @@
     .space {
         padding: rem(8);
         min-width: rem(60);
-        min-height: rem(100);
+        min-height: rem(80);
         margin-inline: rem(8);
     }
 
@@ -52,20 +52,14 @@
             color: var(--white);
             transform: translateY(150%);
             transition: transform 0.5s ease-in-out;
-        }
-        // background
-        &::before {
-            width: 100%;
-            height: 100%;
-            border-radius: rem(20);
-            transform: translateY(100%);
-            transition: transform 0.5s ease-in-out;
+            opacity: 0;
         }
 
         // letter displaying
         &[data-guessed=true] {
             & > span {
                 transform: translateY(0);
+                opacity: 1;
             }
 
             &::before {

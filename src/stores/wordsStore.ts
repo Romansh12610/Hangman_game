@@ -104,6 +104,8 @@ export const useWordsStore = defineStore('words', {
         },
         // btn action
         guessLetter(letter: string) {
+            // terminate if Lose or Win game
+            if (this.isPlayerLose || this.isPlayerWin) return;
             // if already guessed this letter
             if (this.guessedLetters.has(letter)) {
                 return;

@@ -20,9 +20,7 @@
 
     // track guessed letters
     watch(() => store.guessedLetters, (newSet, oldSet) => {
-        console.log('here');
         if (newSet.size > oldSet.size && lettersSet.size > 0) {
-            console.log('here');
 
             newSet.forEach(value => {
                 if (lettersSet.has(value)) {
@@ -50,7 +48,7 @@
     .keyboard {
         @include rowFlex(center, center, rem(30));
         flex-wrap: wrap;
-        margin-top: rem(40);
-        max-width: 80vw;
+        margin-top: rem(10);
+        width: clamp(rem(620), 80vw, rem(850));
     }
 </style>

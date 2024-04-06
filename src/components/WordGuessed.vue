@@ -22,7 +22,7 @@
 
     .letter-wrapper {
         // mb grid later
-        @include rowFlex(center, center, rem(30));
+        @include rowFlex(center, center, rem(20));
         flex-wrap: wrap;
 
         column-gap: rem(12);
