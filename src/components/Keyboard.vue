@@ -1,32 +1,28 @@
 <script setup lang="ts">
-    import { onBeforeMount, onMounted, onUnmounted, reactive, watch } from 'vue';
+    import { onMounted, onUnmounted, ref, watch } from 'vue';
     import KeyboardBtn from './KeyboardBtn.vue';
     import { useWordsStore } from '@/stores/wordsStore';
 
-    const lettersSet = reactive<Set<string>>(new Set());
     const store = useWordsStore();
-
-    onBeforeMount(() => {
-        for (let letterCode = 97; letterCode <= 122; ++letterCode) {
-            lettersSet.add(String.fromCharCode(letterCode));
-        }
-    });
+    // for excluding letters from set
+    const guessedLetter = ref('');
     
     // key pressing
     function handleKeyPress(e: KeyboardEvent) {
         const formattedChar = e.code.replace(/key/i, '').toLowerCase().trim();
+        // check if value is in the current keyboard!
+        // dont damage player if it presses wrong btn again
+        if (!store.keyboardLetters.has(formattedChar)) {
+            return;
+        }
+        guessedLetter.value = formattedChar;
         store.guessLetter(formattedChar);
     }
 
     // track guessed letters
-    watch(() => store.guessedLetters, (newSet, oldSet) => {
-        if (newSet.size > oldSet.size && lettersSet.size > 0) {
-
-            newSet.forEach(value => {
-                if (lettersSet.has(value)) {
-                    lettersSet.delete(value);
-                }
-            });
+    watch(guessedLetter, (letter) => {
+        if (store.keyboardLetters.has(letter)) {
+            store.keyboardLetters.delete(letter);
         }
     });
 
@@ -35,11 +31,11 @@
 </script>
 
 <template>
-    <ul class="keyboard">
-        <li v-for="letter in lettersSet">
+    <TransitionGroup name="key_list" class="keyboard" tag="ul">
+        <li v-for="letter in store.keyboardLetters" :key="letter">
             <KeyboardBtn :letter-value="letter" />
         </li>
-    </ul>
+    </TransitionGroup>
 </template>
 
 <style scoped lang="scss">
@@ -50,5 +46,33 @@
         flex-wrap: wrap;
         margin-top: rem(10);
         width: clamp(rem(620), 80vw, rem(850));
+
+        & > li {
+            // for z-index on leaving elems
+            position: relative;
+            z-index: 1;
+        }
+    }
+
+    // transition state
+    //.key_list-move,
+    .key_list-enter-active, 
+    .key_list-leave-active {
+        transition: all 0.45s ease-in-out;
+    }
+
+    // in dom state
+    .key_list-enter-to,
+    .key_list-leave-from {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+
+    // not in dom state
+    .key_list-enter-from, 
+    .key_list-leave-to {
+        transform: translateY(100%) scale(0.3);
+        opacity: 0;
+        z-index: 0;
     }
 </style>

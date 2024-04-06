@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import type { CategoryData, CategoryNames } from '@/types/categoryData';
+import { reactive } from 'vue';
 
 interface WordObject {
     name: string;
@@ -30,6 +31,8 @@ export interface WordsStoreState {
     // to easy check if whole word guessed
     // (not iterate through array of objects)
     guessedLetters: Set<string>;
+    // for tracking active keys
+    keyboardLetters: Set<string>;
     // health in %
     playerHealth: number;
     isPlayerWin: boolean;
@@ -48,6 +51,7 @@ export const useWordsStore = defineStore('words', {
         currentLetterArray: [],
         uniqueLetters: new Set(),
         guessedLetters: new Set(),
+        keyboardLetters: new Set(),
         // player
         playerHealth: 100,
         isPlayerWin: false,
@@ -89,14 +93,22 @@ export const useWordsStore = defineStore('words', {
                         this.uniqueLetters.add(lowerCaseLetter);
                     }
                 }
+                // setup keyboard
+                this.setupKeyboardLetters();
+            }
+        },
+        // keyboard
+        setupKeyboardLetters() {
+            for (let letterCode = 97; letterCode <= 122; ++letterCode) {
+                this.keyboardLetters.add(String.fromCharCode(letterCode));
             }
         },
         // clean up
         cleanUpCurrentState() {
             this.currentWord = null;
             this.currentLetterArray = [];
-            this.uniqueLetters = new Set();
-            this.guessedLetters = new Set();
+            this.uniqueLetters = reactive(new Set());
+            this.guessedLetters = reactive(new Set());
             // player
             this.playerHealth = 100;
             this.isPlayerWin = false;
@@ -110,6 +122,7 @@ export const useWordsStore = defineStore('words', {
             if (this.guessedLetters.has(letter)) {
                 return;
             }
+
             if (this.uniqueLetters.has(letter)) {
 
                 this.guessedLetters.add(letter);
