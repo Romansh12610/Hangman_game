@@ -35,15 +35,19 @@
         }
 
         25% {
-            transform: scale($initScale + 0.25);
+            transform: scale($initScale + 0.45);
         }
 
-        50% {
+        45% {
             transform: scale($initScale - 0.25);
         }
 
-        75% {
-            transform: scale($initScale + 0.4);
+        70% {
+            transform: scale($initScale + 0.65);
+        }
+
+        88% {
+            transform: scale(($initScale - 0.15));
         }
 
         100% {

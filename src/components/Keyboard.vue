@@ -1,14 +1,14 @@
 <script setup lang="ts">
-    import { onBeforeMount, onMounted, onUnmounted, reactive } from 'vue';
+    import { onBeforeMount, onMounted, onUnmounted, reactive, watch } from 'vue';
     import KeyboardBtn from './KeyboardBtn.vue';
     import { useWordsStore } from '@/stores/wordsStore';
 
-    const lettersArray = reactive<string[]>([]);
+    const lettersSet = reactive<Set<string>>(new Set());
     const store = useWordsStore();
 
     onBeforeMount(() => {
         for (let letterCode = 97; letterCode <= 122; ++letterCode) {
-            lettersArray.push(String.fromCharCode(letterCode));
+            lettersSet.add(String.fromCharCode(letterCode));
         }
     });
     
@@ -18,13 +18,27 @@
         store.guessLetter(formattedChar);
     }
 
+    // track guessed letters
+    watch(() => store.guessedLetters, (newSet, oldSet) => {
+        console.log('here');
+        if (newSet.size > oldSet.size && lettersSet.size > 0) {
+            console.log('here');
+
+            newSet.forEach(value => {
+                if (lettersSet.has(value)) {
+                    lettersSet.delete(value);
+                }
+            });
+        }
+    });
+
     onMounted(() => window.addEventListener('keydown', handleKeyPress));
     onUnmounted(() => window.removeEventListener('keydown', handleKeyPress));
 </script>
 
 <template>
     <ul class="keyboard">
-        <li v-for="letter in lettersArray">
+        <li v-for="letter in lettersSet">
             <KeyboardBtn :letter-value="letter" />
         </li>
     </ul>
