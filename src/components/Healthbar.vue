@@ -1,11 +1,55 @@
 <script setup lang="ts">
+    import { onMounted, ref, watch } from 'vue';
     import HeartIcon from './images/HeartIcon.vue';
+    import { useWordsStore } from '@/stores/wordsStore';
+
+    // for 'damaging & winning states'
+    const colors = {
+        red: '#be0000',
+        green: '#00c03a',
+    };
+
+    const healthBar = ref<HTMLDivElement | null>(null);
+    const initialElWidth = ref(0);
+    const currentElWidth = ref(0);
+    const store = useWordsStore();
+
+    onMounted(() => {
+        if (healthBar.value) {
+            initialElWidth.value = healthBar.value.offsetWidth;
+            currentElWidth.value = initialElWidth.value;
+        }
+    });
+
+    watch(() => store.playerHealth, (newValue, oldValue) => {
+        if (!healthBar.value || initialElWidth.value === 0 || currentElWidth.value === 0) return;
+        
+        const isDecreased = newValue < oldValue;
+        if (isDecreased) {
+            const decreaseValuePercent = (oldValue - newValue) / 100;
+            currentElWidth.value -= (initialElWidth.value * decreaseValuePercent);
+            
+            if (currentElWidth.value < 0) {
+                healthBar.value.style.width = 0 + 'px';
+                return;
+            }
+
+            healthBar.value.style.width = currentElWidth.value + 'px';
+            healthBar.value.style.backgroundColor = colors.red;
+
+            setTimeout(() => {
+                if (healthBar.value != null) {
+                    healthBar.value.style.backgroundColor = colors.green;
+                }
+            }, 700);
+        }
+    });
 </script>
 
 <template>
     <div class="bar">
         <div class="bar__track">
-            <div></div>
+            <div id="health_track" ref="healthBar"></div>
         </div>
         <HeartIcon />
     </div>
@@ -18,7 +62,20 @@
         @include rowFlex(center, center, rem(20));
 
         &__track {
+            @include rowFlex(center, center);
             background-color: var(--white);
+            min-width: rem(150);
+            height: rem(30);
+            border-radius: rem(20);
+            position: relative;
+
+            & #health_track {
+                background-color: var(--green);
+                min-height: 60%;
+                width: 90%;
+                border-radius: rem(20);
+                transition: width 0.7s ease-in-out, background-color 0.2s ease-in-out;
+            }
         }
     }
 </style>

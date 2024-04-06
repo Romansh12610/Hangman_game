@@ -69,8 +69,6 @@
             }, durationOfAnimation.value);   
         }
     });
-    
-fillColor
 </script>
 
 <template>

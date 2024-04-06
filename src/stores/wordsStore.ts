@@ -62,12 +62,6 @@ export const useWordsStore = defineStore('words', {
 
             return Object.keys(state.categories) as CategoryNames[];
         },
-        /* damageState: (state) => {
-            return state.isReceiveDamage;
-        },
-        guessedState: (state) => {
-            return state.isGuessedLetter;
-        } */
     },
     actions: {
         setupCurrentWord(categoryName: CategoryNames) {
@@ -110,11 +104,11 @@ export const useWordsStore = defineStore('words', {
         },
         // btn action
         guessLetter(letter: string) {
+            // if already guessed this letter
+            if (this.guessedLetters.has(letter)) {
+                return;
+            }
             if (this.uniqueLetters.has(letter)) {
-                // if already guessed this letter
-                if (this.guessedLetters.has(letter)) {
-                    return;
-                }
 
                 this.guessedLetters.add(letter);
                 // add state
