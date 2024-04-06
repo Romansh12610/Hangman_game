@@ -25,8 +25,32 @@
 }
 
 // animations
+@mixin pulseAnimation($duration: 1000, $initScale: 1) {
 
+    animation: pulse #{$duration}#{ms} ease-in-out;
 
+    @keyframes pulse {
+        0% {
+            transform: scale($initScale);
+        }
+
+        25% {
+            transform: scale($initScale + 0.25);
+        }
+
+        50% {
+            transform: scale($initScale - 0.25);
+        }
+
+        75% {
+            transform: scale($initScale + 0.4);
+        }
+
+        100% {
+            transform: scale($initScale);
+        }
+    }
+}
 
 // components
 @mixin btn_shadow_border($yOffset, $xOffset, $bg_color_var: --pink, $shadow_color_var: --blue-light-op, $border_color_var: --blue-dark) {

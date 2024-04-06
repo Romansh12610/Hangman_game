@@ -34,6 +34,8 @@ export interface WordsStoreState {
     playerHealth: number;
     isPlayerWin: boolean;
     isPlayerLose: boolean;
+    isReceiveDamage: boolean;
+    isGuessedLetter: boolean;
 };
 
 
@@ -50,6 +52,8 @@ export const useWordsStore = defineStore('words', {
         playerHealth: 100,
         isPlayerWin: false,
         isPlayerLose: false,
+        isReceiveDamage: false,
+        isGuessedLetter: false,
         // todo: difficulty level 
     }),
     getters: {
@@ -57,7 +61,13 @@ export const useWordsStore = defineStore('words', {
             if (state.categories == null) return null;
 
             return Object.keys(state.categories) as CategoryNames[];
-        }
+        },
+        /* damageState: (state) => {
+            return state.isReceiveDamage;
+        },
+        guessedState: (state) => {
+            return state.isGuessedLetter;
+        } */
     },
     actions: {
         setupCurrentWord(categoryName: CategoryNames) {
@@ -107,6 +117,8 @@ export const useWordsStore = defineStore('words', {
                 }
 
                 this.guessedLetters.add(letter);
+                // add state
+                this.isGuessedLetter = true;
                 // open letter
                 for (const letterObj of this.currentLetterArray) {
                     if (letterObj.value.toLowerCase() === letter) {
@@ -123,6 +135,7 @@ export const useWordsStore = defineStore('words', {
         }, 
         // Player state
         damagePlayer() {
+            this.isReceiveDamage = true;
             this.playerHealth -= 14;
             this.checkIfPlayerLose();
         },
@@ -144,6 +157,13 @@ export const useWordsStore = defineStore('words', {
             if (isPlayerLose) {
                 this.isPlayerLose = true;
             };
-        }
+        },
+        // cancel states
+        cancelDamageState() {
+            this.isReceiveDamage = false;
+        },
+        cancelGuessedState() {
+            this.isGuessedLetter = false;
+        },
     }
 });

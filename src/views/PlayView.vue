@@ -7,6 +7,7 @@
     import { RoutePaths } from '@/router';
     import WordGuessed from '@/components/WordGuessed.vue';
     import Keyboard from '@/components/Keyboard.vue';
+    import Healthbar from '@/components/Healthbar.vue';
 
     interface RouteParams {
         category: CategoryNames;
@@ -34,10 +35,7 @@
                 <h2>{{ categoryName }}</h2>
             </div>
 
-            <div class="play-section__healthbar">
-            </div>
-
-            
+            <Healthbar />
         </div>
         <!-- word displaing -->
         <WordGuessed />
@@ -71,14 +69,6 @@
                 font-size: rem(50);
                 color: var(--white);
             }
-        }
-
-        &__healthbar {
-            //temp
-            width: rem(60);
-            height: rem(60);
-            background-color: var(--white);
-            border-radius: rem(20);
         }
     }
 </style>

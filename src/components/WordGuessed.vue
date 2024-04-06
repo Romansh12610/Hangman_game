@@ -3,12 +3,11 @@
     import LetterGuessed from './LetterGuessed.vue';
 
     const store = useWordsStore();
-    const { currentLetterArray } = store;
 </script>
 
 <template>
     <ul class="letter-wrapper">
-        <li v-for="letter in currentLetterArray">
+        <li v-for="letter in store.currentLetterArray">
             <LetterGuessed 
                 :value="letter.value" 
                 :is-guessed="letter.isGuessed"
