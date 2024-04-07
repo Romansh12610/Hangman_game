@@ -99,6 +99,7 @@ export const useWordsStore = defineStore('words', {
         },
         // keyboard
         setupKeyboardLetters() {
+            this.keyboardLetters.clear();
             for (let letterCode = 97; letterCode <= 122; ++letterCode) {
                 this.keyboardLetters.add(String.fromCharCode(letterCode));
             }
@@ -145,7 +146,7 @@ export const useWordsStore = defineStore('words', {
         // Player state
         damagePlayer() {
             this.isReceiveDamage = true;
-            this.playerHealth -= 14;
+            this.playerHealth -= 10;
             this.checkIfPlayerLose();
         },
         checkIfPlayerWin() {

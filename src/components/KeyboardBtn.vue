@@ -1,5 +1,6 @@
 <script setup lang="ts">
     import { useWordsStore } from "@/stores/wordsStore";
+import { ref, watch } from "vue";
 
     interface BtnWithValue extends HTMLButtonElement {
         dataset: {
@@ -15,6 +16,8 @@
     });
 
     const store = useWordsStore();
+    // for excluding letters from set
+    const guessedLetter = ref('');
 
     // if btn clicked
     function handleBtnClick(e: MouseEvent) {
@@ -22,8 +25,21 @@
         if (!target) return;
 
         const formattedChar = target.dataset.value.replace(/key/i, '').toLowerCase().trim();
+        // check if value is in the current keyboard!
+        // dont damage player if it presses wrong btn again
+        if (!store.keyboardLetters.has(formattedChar)) {
+            return;
+        }
+        guessedLetter.value = formattedChar;
         store.guessLetter(formattedChar);
     }
+
+    // track guessed letters
+    watch(guessedLetter, (letter) => {
+        if (store.keyboardLetters.has(letter)) {
+            store.keyboardLetters.delete(letter);
+        }
+    });
 </script>
 
 <template>

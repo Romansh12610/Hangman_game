@@ -46,6 +46,7 @@
         flex-wrap: wrap;
         margin-top: rem(10);
         width: clamp(rem(620), 80vw, rem(850));
+        position: relative;
 
         & > li {
             // for z-index on leaving elems
@@ -55,24 +56,33 @@
     }
 
     // transition state
-    //.key_list-move,
+    .key_list-move {
+        transition: all 0.45s ease-in-out;
+    }
+
     .key_list-enter-active, 
     .key_list-leave-active {
         transition: all 0.45s ease-in-out;
     }
 
+    
     // in dom state
     .key_list-enter-to,
     .key_list-leave-from {
         transform: translateY(0) scale(1);
         opacity: 1;
     }
-
+    
     // not in dom state
     .key_list-enter-from, 
     .key_list-leave-to {
         transform: translateY(100%) scale(0.3);
         opacity: 0;
         z-index: 0;
+    }
+
+    // for moving elems
+    .key_list-leave-active {
+        position: absolute;
     }
 </style>
