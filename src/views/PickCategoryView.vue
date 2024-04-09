@@ -10,12 +10,20 @@
 
     const store = useWordsStore()
     // states for requests
+    const isResult = ref(false);
     const isLoading = ref(false)
     const isError = ref(false)
 
     onMounted(async () => {
         if (store.categories == null) {
-            await store.setupCategories('/data.json', isLoading, isError);
+            try {
+                isLoading.value = true;
+                isResult.value = await store.setupCategories('/data.json', isLoading, isError);
+            } catch {
+                isError.value = true;
+            } finally {
+                isLoading.value = false;
+            }
         }
     })
 </script>

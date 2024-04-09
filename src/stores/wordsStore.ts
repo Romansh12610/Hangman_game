@@ -73,7 +73,7 @@ export const useWordsStore = defineStore('words', {
         },
     },
     actions: {
-        async setupCurrentWord(categoryName: CategoryNames) {
+        setupCurrentWord(categoryName: CategoryNames) {
             if (!this.categories) {
                 return console.error('setup word: NO categories');
             }

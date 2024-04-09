@@ -22,7 +22,7 @@ export const useCategoryData = async <ReturnData>(url: string) => {
         }
     }
 
-    getCategoryData(url);
+    await getCategoryData(url);
 
     return { data, error, loading };
 };
