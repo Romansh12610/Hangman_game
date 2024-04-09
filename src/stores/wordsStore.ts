@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import type { CategoryData, CategoryNames } from '@/types/categoryData';
-import { Ref, reactive, watchEffect } from 'vue';
+import { Ref, reactive } from 'vue';
 import { useCategoryData } from '@/hooks/useCategoryData';
 
 interface WordObject {
@@ -115,17 +115,14 @@ export const useWordsStore = defineStore('words', {
         },
         // categories
         async setupCategories(url: string, isLoading: Ref<boolean>, isError: Ref<boolean>) {
-            const { data, loading, error } = await useCategoryData<CategoryData>(url);
+            const data = await useCategoryData<CategoryData>(url, isLoading, isError);
 
-            watchEffect(() => {
-                isLoading.value = loading.value;
-                isError.value = error.value;
-                if (data.value) {
-                    this.categories = data.value.categories;
-                }
-            });
+            if (data.value != null) {
+                this.categories = data.value.categories;
+                return true;
+            }
 
-            return Boolean(this.categories);
+            return false;
         },
         // clean up
         cleanUpCurrentState() {

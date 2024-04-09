@@ -35,8 +35,8 @@
                 isError
             )
         }
-        store.setupCurrentWord(categoryName)
-    })
+        store.setupCurrentWord(categoryName);
+    });
 
     watchEffect(async () => {
         if (isResult.value == false) {
@@ -45,9 +45,9 @@
                 isLoading,
                 isError
             )
-            store.setupCurrentWord(categoryName)
+            store.setupCurrentWord(categoryName);
         }
-    })
+    });
 </script>
 
 <template>

@@ -1,28 +1,25 @@
-import { ref } from "vue";
+import { Ref, ref } from "vue";
 
-export const useCategoryData = async <ReturnData>(url: string) => {
+export const useCategoryData = async <ReturnData>(url: string, isLoading: Ref<boolean>, isError: Ref<boolean>) => {
+
     const data = ref<ReturnData | null>(null);
-    const loading = ref(false);
-    const error = ref(false);
 
-    async function getCategoryData(url: string) {
-        loading.value = true;
-
-        try {
-            const response = await fetch(url);
-            // spinner demonstration purpose
-            await new Promise(res => setTimeout(res, 700));
-
-            data.value = await response.json();
-        } catch {
-            error.value = true;
-        }
-        finally {
-            loading.value = false;
-        }
+    try {
+        isLoading.value = true;
+        data.value = await fetchCategoryData(url);
+    } catch {
+        isError.value = true;
+    } finally {
+        isLoading.value = false;
     }
 
-    await getCategoryData(url);
-
-    return { data, error, loading };
+    return data;
 };
+
+async function fetchCategoryData(url: string) {
+    const response = await fetch(url);
+    await new Promise(res => setTimeout(res, 650));
+    const data = await response.json();
+
+    return data;
+}

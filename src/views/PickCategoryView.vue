@@ -2,7 +2,7 @@
     import PickCategory from '@/components/images/PickCategory.vue'
     import BackLink from '@/components/BackLink.vue'
     import { RoutePaths } from '@/router'
-    import { onMounted, ref } from 'vue'
+    import { onMounted, ref, watchEffect } from 'vue'
     import { useWordsStore } from '@/stores/wordsStore'
     import BtnWithText from '@/components/BtnWithText.vue'
     import Spinner from '@/components/Spinner.vue'
@@ -16,14 +16,21 @@
 
     onMounted(async () => {
         if (store.categories == null) {
-            try {
-                isLoading.value = true;
-                isResult.value = await store.setupCategories('/data.json', isLoading, isError);
-            } catch {
-                isError.value = true;
-            } finally {
-                isLoading.value = false;
-            }
+            isResult.value = await store.setupCategories(
+                '/data.json',
+                isLoading,
+                isError,
+            );
+        }
+    });
+
+    watchEffect(async () => {
+        if (isResult.value == false) {
+            isResult.value = await store.setupCategories(
+                '/data.json',
+                isLoading,
+                isError
+            )
         }
     })
 </script>
@@ -42,7 +49,7 @@
                 link-text="To home page"
                 :href="RoutePaths.ROOT"
             />
-            <div v-else-if="store.categories" class="pick-section__categories">
+            <div v-else-if="isResult" class="pick-section__categories">
                 <BtnWithText
                     v-for="categoryName in store.categoryNames"
                     :btn-text="categoryName"
