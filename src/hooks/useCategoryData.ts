@@ -1,6 +1,5 @@
 import { ref } from "vue";
 
-
 export const useCategoryData = async <ReturnData>(url: string) => {
     const data = ref<ReturnData | null>(null);
     const loading = ref(false);

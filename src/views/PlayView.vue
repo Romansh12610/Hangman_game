@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { useRoute } from 'vue-router';
-    import { onBeforeMount } from 'vue';
+    import { onMounted, ref, watchEffect } from 'vue';
     import type { CategoryNames } from '@/types/categoryData';
     import { useWordsStore } from "@/stores/wordsStore";
     import BackLink from '@/components/BackLink.vue';
@@ -9,7 +9,8 @@
     import Keyboard from '@/components/Keyboard.vue';
     import Healthbar from '@/components/Healthbar.vue';
     import EndGameModal from '@/components/EndGameModal.vue';
-    // import { watch } from 'vue';
+    import Spinner from '@/components/Spinner.vue';
+    import Error from '@/components/Error.vue';
 
     interface RouteParams {
         category: CategoryNames;
@@ -17,17 +18,31 @@
 
     const route = useRoute();
     const { category: categoryName } = route.params as unknown as RouteParams;
-    
-    onBeforeMount(() => {
-        // setup current word
-        const route = useRoute();
-        const { category: categoryName } = route.params as unknown as RouteParams;
-        const store = useWordsStore();
-        store.setupCurrentWord(categoryName);
-    });
-
+    // states for loading data
+    // if page reloaded and
+    // data is not loaded on previous view
+    const isResult = ref(false);
+    const isLoading = ref(false);
+    const isError = ref(false);
     // check win / lose states
     const store = useWordsStore();
+
+    onMounted(async () => {
+        if (!store.categories) {
+            isResult.value = await store.setupCategories('/data.json', isLoading, isError);
+        }    
+        await store.setupCurrentWord(categoryName);
+    });
+    
+    watchEffect(async () => {
+        if (isResult.value == false) {
+            console.log('isResult == false');
+            isResult.value = await store.setupCategories('/data.json', isLoading, isError);      
+            console.log('isResult == ', isResult.value);
+            store.setupCurrentWord(categoryName);
+        }
+    });
+
 </script>
 
 <template>
@@ -41,10 +56,19 @@
 
             <Healthbar />
         </div>
-        <!-- word displaing -->
-        <WordGuessed />
-        <!-- keyboard displaying -->
-        <Keyboard />
+        
+        <Error v-if="isError" 
+            par-text="Error happened..."
+            link-text="To home page"
+            :href="RoutePaths.ROOT"
+        />
+        <div v-else-if="isResult" class="play-section__main">
+            <!-- word displaing -->
+            <WordGuessed />
+            <!-- keyboard displaying -->
+            <Keyboard />
+        </div>
+        <Spinner v-else="isLoading" />
         <!-- end game menu -->
         <EndGameModal v-if="store.isPlayerWin" mode="win" :current-category="categoryName" />
         <EndGameModal v-else-if="store.isPlayerLose" mode="lose"
@@ -77,6 +101,10 @@
                 font-size: rem(50);
                 color: var(--white);
             }
+        }
+
+        &__main {
+            @include colFlex(center, center, rem(50));
         }
     }
 </style>

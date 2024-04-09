@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import type { CategoryData, CategoryNames } from '@/types/categoryData';
-import { reactive } from 'vue';
+import { Ref, reactive, watchEffect } from 'vue';
+import { useCategoryData } from '@/hooks/useCategoryData';
 
 interface WordObject {
     name: string;
@@ -66,9 +67,16 @@ export const useWordsStore = defineStore('words', {
 
             return Object.keys(state.categories) as CategoryNames[];
         },
+        isStateEmpty: (state) => {
+            console.log(`letterArr: ${state.currentLetterArray}\ncurrent word: ${state.currentWord}\nkeyboardSet: ${state.keyboardLetters.size}`);
+            return state.currentLetterArray.length === 0 || state.currentWord === null || state.keyboardLetters.size === 0;
+        },
     },
     actions: {
-        setupCurrentWord(categoryName: CategoryNames) {
+        async setupCurrentWord(categoryName: CategoryNames) {
+            if (!this.categories) {
+                return console.error('setup word: NO categories');
+            }
             if (this.categories && this.categories[categoryName]) {
                 // clean up previous
                 this.cleanUpCurrentState();
@@ -76,20 +84,21 @@ export const useWordsStore = defineStore('words', {
                 const words = this.categories[categoryName];
                 const unguessedWords = words.filter(word => word.guessed === false);
                 const randomWord = unguessedWords[Math.floor(Math.random() * unguessedWords.length)];
+                // setup current word
                 this.currentWord = randomWord;
 
                 // setup current wordArray & uniq letter seq
                 const wordValue = randomWord.name;
                 for (const letter of wordValue) {
                     this.currentLetterArray.push({
-                        // uniform keys
                         value: letter,
                         isGuessed: false,
                         isSpace: letter === ' ',
                     });
                     
                     const lowerCaseLetter = letter.toLowerCase();
-                    if (!this.uniqueLetters.has(lowerCaseLetter)) {
+                    // do not add spaces to set!
+                    if (!this.uniqueLetters.has(lowerCaseLetter) || lowerCaseLetter !== ' ') {
                         this.uniqueLetters.add(lowerCaseLetter);
                     }
                 }
@@ -103,6 +112,20 @@ export const useWordsStore = defineStore('words', {
             for (let letterCode = 97; letterCode <= 122; ++letterCode) {
                 this.keyboardLetters.add(String.fromCharCode(letterCode));
             }
+        },
+        // categories
+        async setupCategories(url: string, isLoading: Ref<boolean>, isError: Ref<boolean>) {
+            const { data, loading, error } = await useCategoryData<CategoryData>(url);
+
+            watchEffect(() => {
+                isLoading.value = loading.value;
+                isError.value = error.value;
+                if (data.value) {
+                    this.categories = data.value.categories;
+                }
+            });
+
+            return Boolean(this.categories);
         },
         // clean up
         cleanUpCurrentState() {
@@ -158,15 +181,21 @@ export const useWordsStore = defineStore('words', {
 
             if (isPlayerWin) {
                 // end of game
-                this.isPlayerWin = true;
+                // timeout for smooth appearence of last letter
+                setTimeout(() => this.isPlayerWin = true, 800);
             }
         },
         checkIfPlayerLose() {
             const isPlayerLose = this.playerHealth <= 0;
             // end of game
             if (isPlayerLose) {
-                this.isPlayerLose = true;
+                setTimeout(() => this.isPlayerLose = true, 800);
             };
+        },
+        checkIfEmptyState() {
+            const isEmpty = this.currentLetterArray.length === 0 || this.currentWord === null || this.keyboardLetters.size === 0;
+
+            return isEmpty;
         },
         // cancel states
         cancelDamageState() {

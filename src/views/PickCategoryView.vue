@@ -2,32 +2,22 @@
     import PickCategory from '@/components/images/PickCategory.vue'
     import BackLink from '@/components/BackLink.vue'
     import { RoutePaths } from '@/router'
-    import { onMounted, ref, watchEffect } from 'vue'
-    import Spinner from "@/components/Spinner.vue"
-    import { useWordsStore } from "@/stores/wordsStore"
+    import { onMounted, ref } from 'vue'
+    import { useWordsStore } from '@/stores/wordsStore'
     import BtnWithText from '@/components/BtnWithText.vue'
-    import { useCategoryData } from '@/hooks/useCategoryData'
-    import type { CategoryData } from "@/types/categoryData";
-    import LinkUnderlined from "@/components/LinkUnderlined.vue";
+    import Spinner from '@/components/Spinner.vue'
+    import Error from '@/components/Error.vue'
 
-    const store = useWordsStore();
+    const store = useWordsStore()
     // states for requests
-    const isLoading = ref(false);
-    const isError = ref(false);
+    const isLoading = ref(false)
+    const isError = ref(false)
 
     onMounted(async () => {
         if (store.categories == null) {
-            const { data, error, loading } = await useCategoryData<CategoryData>('/data.json');
-
-            watchEffect(() => {
-                isLoading.value = loading.value
-                isError.value = error.value;
-                if (data.value != null) {
-                    store.categories = data.value.categories;
-                }
-            });
-        }   
-    });
+            await store.setupCategories('/data.json', isLoading, isError);
+        }
+    })
 </script>
 
 <template>
@@ -38,12 +28,15 @@
         </div>
         <div class="pick-section__result-wrapper">
             <Spinner v-if="isLoading" />
-            <div v-else-if="isError" class="pick-section__error">
-                <p>You get an Error</p>
-                <LinkUnderlined text="To Home Page" :to="RoutePaths.ROOT" />
-            </div>
-            <div v-else="store.categories" class="pick-section__categories">
-                <BtnWithText v-for="categoryName in store.categoryNames" 
+            <Error
+                v-else-if="isError"
+                par-text="Error was occured"
+                link-text="To home page"
+                :href="RoutePaths.ROOT"
+            />
+            <div v-else-if="store.categories" class="pick-section__categories">
+                <BtnWithText
+                    v-for="categoryName in store.categoryNames"
                     :btn-text="categoryName"
                     :href="`/play/${categoryName}`"
                     big
@@ -72,12 +65,12 @@
                 position: absolute;
                 left: -10px;
             }
-            
+
             & svg {
                 margin-top: rem(30);
             }
         }
-        
+
         &__result-wrapper {
             @include colFlex(center, center);
         }
