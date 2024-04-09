@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import type { CategoryData, CategoryNames } from '@/types/categoryData';
 import { Ref, reactive } from 'vue';
 import { useCategoryData } from '@/hooks/useCategoryData';
+import { useAudioStore } from './audioStore';
 
 interface WordObject {
     name: string;
@@ -145,10 +146,11 @@ export const useWordsStore = defineStore('words', {
             }
 
             if (this.uniqueLetters.has(letter)) {
-
+                const { playAudio } = useAudioStore();
                 this.guessedLetters.add(letter);
                 // add state
                 this.isGuessedLetter = true;
+                playAudio('guessSound');
                 // open letter
                 for (const letterObj of this.currentLetterArray) {
                     if (letterObj.value.toLowerCase() === letter) {
@@ -165,7 +167,10 @@ export const useWordsStore = defineStore('words', {
         }, 
         // Player state
         damagePlayer() {
+            const { playAudio } = useAudioStore();
+
             this.isReceiveDamage = true;
+            playAudio('damageSound');
             this.playerHealth -= 10;
             this.checkIfPlayerLose();
         },
@@ -179,14 +184,22 @@ export const useWordsStore = defineStore('words', {
             if (isPlayerWin) {
                 // end of game
                 // timeout for smooth appearence of last letter
-                setTimeout(() => this.isPlayerWin = true, 800);
+                setTimeout(() => {
+                    const { playAudio } = useAudioStore();
+                    playAudio('winSound');
+                    this.isPlayerWin = true
+                }, 800);
             }
         },
         checkIfPlayerLose() {
             const isPlayerLose = this.playerHealth <= 0;
             // end of game
             if (isPlayerLose) {
-                setTimeout(() => this.isPlayerLose = true, 800);
+                setTimeout(() => {
+                    const { playAudio } = useAudioStore();
+                    playAudio('loseSound');
+                    this.isPlayerLose = true
+                }, 800);
             };
         },
         checkIfEmptyState() {

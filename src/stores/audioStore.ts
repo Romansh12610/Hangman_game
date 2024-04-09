@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { reactive } from "vue";
 
-const basePath = "../assets/sounds";
+const basePath = "/src/assets/sounds";
 
 const audioPaths = {
     WIN: `${basePath}/win.wav`,
@@ -18,6 +18,7 @@ interface AudioStoreState {
         guessSound: HTMLAudioElement;
     },
     playAudio: (soundName: SoundName) => void;
+    updateVolume: (value: number, soundName: SoundName) => void;
 }
 
 type Sounds = AudioStoreState['sounds'];
@@ -34,24 +35,19 @@ export const useAudioStore = defineStore('audio', (): AudioStoreState => {
     
     // actions and methods
     function playAudio(soundName: SoundName) {
-        // pause other current playing sounds
-        for (const sound of Object.values(sounds)) {
-            if (!sound.paused) {
-                sound.pause();
-            }
-        }
-        // play new
-        if (sounds[soundName].readyState === 4) {
-            // if playback not at start -> reset
-            if (sounds[soundName].currentTime > 0) {
-                sounds[soundName].fastSeek(0);
-            }
-            sounds[soundName].play();
+        sounds[soundName].fastSeek(0);
+        sounds[soundName].play();
+    }
+
+    function updateVolume(value: number, soundName: SoundName) {
+        if (value >= 0 && value <= 1) {
+            sounds[soundName].volume = value;
         }
     }
    
     return { 
         sounds,
         playAudio,
+        updateVolume,
     };
 });
