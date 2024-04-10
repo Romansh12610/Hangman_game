@@ -18,7 +18,7 @@ interface AudioStoreState {
         guessSound: HTMLAudioElement;
     },
     playAudio: (soundName: SoundName) => void;
-    updateVolume: (value: number, soundName: SoundName) => void;
+    updateVolume: (value: number, soundName?: SoundName) => void;
 }
 
 type Sounds = AudioStoreState['sounds'];
@@ -39,9 +39,16 @@ export const useAudioStore = defineStore('audio', (): AudioStoreState => {
         sounds[soundName].play();
     }
 
-    function updateVolume(value: number, soundName: SoundName) {
+    function updateVolume(value: number, soundName?: SoundName) {
         if (value >= 0 && value <= 1) {
-            sounds[soundName].volume = value;
+            if (!soundName) {
+                for (const sound of Object.values(sounds)) {
+                    sound.volume = value;
+                }
+            }
+            else {
+                sounds[soundName].volume = value;
+            }
         }
     }
    

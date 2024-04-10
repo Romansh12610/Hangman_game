@@ -36,7 +36,7 @@ export interface WordsStoreState {
     // for tracking active keys
     keyboardLetters: Set<string>;
     // health in %
-    playerHealth: number;
+    _playerHealth: number;
     isPlayerWin: boolean;
     isPlayerLose: boolean;
     isReceiveDamage: boolean;
@@ -55,7 +55,7 @@ export const useWordsStore = defineStore('words', {
         guessedLetters: new Set(),
         keyboardLetters: new Set(),
         // player
-        playerHealth: 100,
+        _playerHealth: 100,
         isPlayerWin: false,
         isPlayerLose: false,
         isReceiveDamage: false,
@@ -69,23 +69,18 @@ export const useWordsStore = defineStore('words', {
             return Object.keys(state.categories) as CategoryNames[];
         },
         isStateEmpty: (state) => {
-            console.log(`letterArr: ${state.currentLetterArray}\ncurrent word: ${state.currentWord}\nkeyboardSet: ${state.keyboardLetters.size}`);
             return state.currentLetterArray.length === 0 || state.currentWord === null || state.keyboardLetters.size === 0;
         },
+        playerHealth: (state) => state._playerHealth,
     },
     actions: {
         setupCurrentWord(categoryName: CategoryNames) {
-            if (!this.categories) {
-                return console.error('setup word: NO categories');
-            }
             if (this.categories && this.categories[categoryName]) {
-                // clean up previous
-                this.cleanUpCurrentState();
+                console.log("categories are: ", this.categories[categoryName]);
                 // setup current word
                 const words = this.categories[categoryName];
                 const unguessedWords = words.filter(word => word.guessed === false);
                 const randomWord = unguessedWords[Math.floor(Math.random() * unguessedWords.length)];
-                // setup current word
                 this.currentWord = randomWord;
 
                 // setup current wordArray & uniq letter seq
@@ -132,7 +127,7 @@ export const useWordsStore = defineStore('words', {
             this.uniqueLetters = reactive(new Set());
             this.guessedLetters = reactive(new Set());
             // player
-            this.playerHealth = 100;
+            this._playerHealth = 100;
             this.isPlayerWin = false;
             this.isPlayerLose = false;
         },
@@ -171,7 +166,7 @@ export const useWordsStore = defineStore('words', {
 
             this.isReceiveDamage = true;
             playAudio('damageSound');
-            this.playerHealth -= 10;
+            this._playerHealth -= 10;
             this.checkIfPlayerLose();
         },
         checkIfPlayerWin() {

@@ -22,6 +22,8 @@
     // restart game on "Continue"
     const store = useWordsStore();
     function restartGame() {
+        store.cleanUpCurrentState();
+        console.log('category is: ', props.currentCategory);
         store.setupCurrentWord(props.currentCategory);
     }
 

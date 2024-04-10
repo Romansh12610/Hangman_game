@@ -14,17 +14,19 @@
     const currentElWidth = ref(0);
     const store = useWordsStore();
 
-    onMounted(() => {
+    function setupInitHealth() {
         if (healthBar.value) {
             initialElWidth.value = healthBar.value.offsetWidth;
             currentElWidth.value = initialElWidth.value;
         }
-    });
+    }
+
+    onMounted(() => setupInitHealth());
 
     watch(() => store.playerHealth, (newValue, oldValue) => {
-        if (!healthBar.value || initialElWidth.value === 0 || currentElWidth.value === 0) return;
+        if (!healthBar.value) return; // no DOM el
         
-        const isDecreased = newValue < oldValue;
+        const isDecreased = oldValue && (newValue < oldValue);
         if (isDecreased) {
             const decreaseValuePercent = (oldValue - newValue) / 100;
             currentElWidth.value -= (initialElWidth.value * decreaseValuePercent);
@@ -45,10 +47,10 @@
         }
         // when restart
         else if (newValue === 100) {
-            if (healthBar.value) {
-                currentElWidth.value = initialElWidth.value;
-                healthBar.value.style.width = initialElWidth.value + 'px';
-            }
+
+            currentElWidth.value = initialElWidth.value;
+            healthBar.value.style.width = initialElWidth.value + 'px';
+
         }
     });
 </script>
