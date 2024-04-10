@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { main } from "@/utils/canvas/canvasMain";
 
 const canvasRef = ref<HTMLCanvasElement | null>(null);
@@ -13,7 +13,8 @@ function displayBackground(canvas: HTMLCanvasElement) {
     main(ctx, canvas);
 }
 
-function handleResizeEvent(canvas: HTMLCanvasElement | null) {
+function handleResizeEvent() {
+    const canvas = canvasRef.value;
     if (!canvas) return;
     displayBackground(canvas);
 }
@@ -24,8 +25,10 @@ onMounted(() => {
     
     displayBackground(canvasRef.value);
     // listen on resize screen
-    window.addEventListener('resize', () => handleResizeEvent(canvasRef.value));
+    window.addEventListener('resize', handleResizeEvent);
 });
+
+onUnmounted(() => window.removeEventListener('resize', handleResizeEvent));
 
 </script>
 

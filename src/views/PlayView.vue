@@ -98,7 +98,7 @@
     @use 'ut' as *;
 
     .play-section {
-        @include colFlex(flex-start, flex-start, rem(50));
+        @include colFlex(flex-start, flex-start, rem(80));
 
         padding-top: rem(30);
         overflow: visible;
@@ -121,7 +121,8 @@
         }
 
         &__main {
-            @include colFlex(flex-start, center, clamp(100px, 10vh, 150px));
+            @include colFlex(flex-start, center, clamp(70px, 15vh, 100px));
+            margin-bottom: auto;
         }
     }
 </style>
