@@ -35,7 +35,9 @@
                 isError
             )
         }
-        store.setupCurrentWord(categoryName);
+        if (!store.currentWord) {
+            store.setupCurrentWord(categoryName);
+        }
     });
 
     watchEffect(async () => {
@@ -45,9 +47,12 @@
                 isLoading,
                 isError
             )
-            store.setupCurrentWord(categoryName);
+            if (!store.currentWord) {
+                store.setupCurrentWord(categoryName);
+            }
         }
     });
+
 </script>
 
 <template>
@@ -93,13 +98,13 @@
     @use 'ut' as *;
 
     .play-section {
-        @include colFlex(center, flex-start, rem(50));
+        @include colFlex(flex-start, flex-start, rem(50));
 
         padding-top: rem(30);
-        width: 100%;
-        max-width: 80vw;
         overflow: visible;
+        width: 100%;
         min-height: 100vh;
+        padding-inline: 5vw;
 
         &__top-wrapper {
             @include rowFlex(space-between, center);
@@ -107,8 +112,7 @@
         }
 
         &__category {
-            @include rowFlex(flex-start, center);
-            gap: rem(20);
+            @include rowFlex(flex-start, center, rem(20));
 
             & > h2 {
                 font-size: rem(50);
@@ -117,7 +121,7 @@
         }
 
         &__main {
-            @include colFlex(center, center, rem(50));
+            @include colFlex(flex-start, center, clamp(100px, 10vh, 150px));
         }
     }
 </style>

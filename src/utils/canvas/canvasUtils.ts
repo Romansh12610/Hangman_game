@@ -25,7 +25,7 @@ export const colors = {
     cyan: "#51cbe9",
     purple: "#2d0868",
     lightPurple: "#2f10b8",
-}
+};
 
 export type ColorsType = keyof typeof colors;
 // gradient types

@@ -36,9 +36,10 @@ export interface WordsStoreState {
     // for tracking active keys
     keyboardLetters: Set<string>;
     // health in %
-    _playerHealth: number;
-    isPlayerWin: boolean;
-    isPlayerLose: boolean;
+    _maxPlayerHealth: number;
+    _currPlayerHealth: number;
+    _isPlayerWin: boolean;
+    _isPlayerLose: boolean;
     isReceiveDamage: boolean;
     isGuessedLetter: boolean;
 };
@@ -55,9 +56,10 @@ export const useWordsStore = defineStore('words', {
         guessedLetters: new Set(),
         keyboardLetters: new Set(),
         // player
-        _playerHealth: 100,
-        isPlayerWin: false,
-        isPlayerLose: false,
+        _maxPlayerHealth: 100,
+        _currPlayerHealth: 100,
+        _isPlayerWin: false,
+        _isPlayerLose: false,
         isReceiveDamage: false,
         isGuessedLetter: false,
         // todo: difficulty level 
@@ -71,12 +73,13 @@ export const useWordsStore = defineStore('words', {
         isStateEmpty: (state) => {
             return state.currentLetterArray.length === 0 || state.currentWord === null || state.keyboardLetters.size === 0;
         },
-        playerHealth: (state) => state._playerHealth,
+        playerHealth: (state) => state._currPlayerHealth,
+        isPlayerWin: (state) => state._isPlayerWin,
+        isPlayerLose: (state) => state._isPlayerLose,
     },
     actions: {
         setupCurrentWord(categoryName: CategoryNames) {
             if (this.categories && this.categories[categoryName]) {
-                console.log("categories are: ", this.categories[categoryName]);
                 // setup current word
                 const words = this.categories[categoryName];
                 const unguessedWords = words.filter(word => word.guessed === false);
@@ -94,7 +97,7 @@ export const useWordsStore = defineStore('words', {
                     
                     const lowerCaseLetter = letter.toLowerCase();
                     // do not add spaces to set!
-                    if (!this.uniqueLetters.has(lowerCaseLetter) || lowerCaseLetter !== ' ') {
+                    if (!this.uniqueLetters.has(lowerCaseLetter) && lowerCaseLetter !== ' ') {
                         this.uniqueLetters.add(lowerCaseLetter);
                     }
                 }
@@ -127,14 +130,14 @@ export const useWordsStore = defineStore('words', {
             this.uniqueLetters = reactive(new Set());
             this.guessedLetters = reactive(new Set());
             // player
-            this._playerHealth = 100;
-            this.isPlayerWin = false;
-            this.isPlayerLose = false;
+            this._currPlayerHealth = 100;
+            this._isPlayerWin = false;
+            this._isPlayerLose = false;
         },
         // btn action
         guessLetter(letter: string) {
             // terminate if Lose or Win game
-            if (this.isPlayerLose || this.isPlayerWin) return;
+            if (this._isPlayerLose || this._isPlayerWin) return;
             // if already guessed this letter
             if (this.guessedLetters.has(letter)) {
                 return;
@@ -157,16 +160,18 @@ export const useWordsStore = defineStore('words', {
             }
             // minus health
             else {
-                this.damagePlayer();
+                this.damagePlayer(this.uniqueLetters.size);
             }
         }, 
         // Player state
-        damagePlayer() {
+        damagePlayer(currentLettersCount: number) {
             const { playAudio } = useAudioStore();
 
             this.isReceiveDamage = true;
+            // calc 
+            const minusHealthPercent = this._maxPlayerHealth / currentLettersCount;
             playAudio('damageSound');
-            this._playerHealth -= 10;
+            this._currPlayerHealth -= minusHealthPercent;
             this.checkIfPlayerLose();
         },
         checkIfPlayerWin() {
@@ -182,18 +187,18 @@ export const useWordsStore = defineStore('words', {
                 setTimeout(() => {
                     const { playAudio } = useAudioStore();
                     playAudio('winSound');
-                    this.isPlayerWin = true
+                    this._isPlayerWin = true;
                 }, 800);
             }
         },
         checkIfPlayerLose() {
-            const isPlayerLose = this.playerHealth <= 0;
+            const isPlayerLose = this._currPlayerHealth <= 0;
             // end of game
             if (isPlayerLose) {
                 setTimeout(() => {
                     const { playAudio } = useAudioStore();
                     playAudio('loseSound');
-                    this.isPlayerLose = true
+                    this._isPlayerLose = true;
                 }, 800);
             };
         },

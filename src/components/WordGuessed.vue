@@ -21,13 +21,12 @@
     @use 'ut' as *;
 
     .letter-wrapper {
-        // mb grid later
-        @include rowFlex(center, center, rem(20));
+        @include rowFlex(center, center);
         flex-wrap: wrap;
 
-        column-gap: rem(12);
-        row-gap: rem(18);
-        width: 100%;
-        max-width: 80vw;
+        column-gap: rem(15);
+        row-gap: rem(20);
+        width: clamp(rem(620), 70%, rem(850));
+        max-width: 70vw;
     }
 </style>

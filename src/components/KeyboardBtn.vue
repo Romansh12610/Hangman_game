@@ -52,7 +52,7 @@ import { ref, watch } from "vue";
     @use 'ut' as *;
 
     .key {
-        min-width: rem(80);
+        min-width: rem(70);
         min-height: rem(80);
         padding: rem(10);
         border-radius: rem(20);

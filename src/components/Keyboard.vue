@@ -42,10 +42,10 @@
     @use 'ut' as *;
 
     .keyboard {
-        @include rowFlex(center, center, rem(30));
+        @include rowFlex(flex-start, center, rem(20));
         flex-wrap: wrap;
         margin-top: rem(10);
-        width: clamp(rem(620), 80vw, rem(850));
+        width: clamp(rem(620), 70%, rem(850));
         position: relative;
 
         & > li {
