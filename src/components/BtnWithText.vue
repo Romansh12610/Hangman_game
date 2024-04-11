@@ -1,28 +1,36 @@
 <script setup lang="ts">
-    import { computed } from 'vue';
-    import { RouterLink } from 'vue-router';
+    import { computed } from 'vue'
+    import { RouterLink } from 'vue-router'
 
     const props = defineProps({
         btnText: String,
         big: Boolean,
         href: String,
         // for callback attachment
-        isRestart: Boolean,
+        isCallbackBtn: Boolean,
         // for styles
         isQuitBtn: Boolean,
-    });
+    })
 
-    const emits = defineEmits(['restart']);
-    const btnMode = computed(() => props.big ? 'large' : 'small');
-
+    const emits = defineEmits(['restart'])
+    const btnMode = computed(() => (props.big ? 'large' : 'small'))
 </script>
 
 <template>
-    <RouterLink v-if="!props.isRestart" class="btn" :data-mode="btnMode" :to="href" :data-quit="props.isQuitBtn">
+    <RouterLink
+        v-if="!props.isCallbackBtn"
+        class="btn"
+        :data-mode="btnMode"
+        :to="href"
+    >
         <p class="btn__text">{{ props.btnText }}</p>
     </RouterLink>
     <!-- if need restart game -->
-    <button v-else-if="props.isRestart" class="btn" :data-mode="btnMode"
+    <button
+        v-else-if="props.isCallbackBtn"
+        class="btn"
+        :data-mode="btnMode"
+        :data-quit="props.isQuitBtn"
         @click="$emit('restart')"
     >
         <p class="btn__text">{{ props.btnText }}</p>
@@ -50,15 +58,15 @@
         }
 
         // for quit btn
-        &[data-quit=true] > .btn__text {
+        &[data-quit='true'] > .btn__text {
             color: var(--blue-dark);
         }
 
         // small mode
-        &[data-mode=small] {
+        &[data-mode='small'] {
             @include btn_shadow_border(5, 5, --blue-light, --pink);
             // for quit btn
-            &[data-quit=true] {
+            &[data-quit='true'] {
                 @include btn_shadow_border(5, 5, --pink, --blue-light-op);
             }
 
@@ -77,7 +85,7 @@
         }
 
         // large mode
-        &[data-mode=large] {
+        &[data-mode='large'] {
             @include btn_shadow_border(15, 8, --blue-light, --pink);
 
             padding: 1.25em 1.5em;
