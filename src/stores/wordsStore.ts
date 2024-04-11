@@ -24,6 +24,7 @@ type LetterArray = Letter[];
 // main state int
 export interface WordsStoreState {
     categories: CategoryData['categories'] | null;
+    currentCategory: CategoryNames | null;
     currentWord: WordObject | null;
     currentLetterArray: LetterArray;
     // for faster event handling
@@ -41,6 +42,7 @@ export interface WordsStoreState {
     _isPlayerWin: boolean;
     _isPlayerLose: boolean;
     isReceiveDamage: boolean;
+    maxDamageToPlayer: number;
     isGuessedLetter: boolean;
 };
 
@@ -49,8 +51,8 @@ export const useWordsStore = defineStore('words', {
     state: (): WordsStoreState => ({
         // cached data
         categories: null,
-        // word states
         currentWord: null,
+        currentCategory: null,
         currentLetterArray: [],
         uniqueLetters: new Set(),
         guessedLetters: new Set(),
@@ -58,6 +60,7 @@ export const useWordsStore = defineStore('words', {
         // player
         _maxPlayerHealth: 100,
         _currPlayerHealth: 100,
+        maxDamageToPlayer: 12,
         _isPlayerWin: false,
         _isPlayerLose: false,
         isReceiveDamage: false,
@@ -80,6 +83,9 @@ export const useWordsStore = defineStore('words', {
     actions: {
         setupCurrentWord(categoryName: CategoryNames) {
             if (this.categories && this.categories[categoryName]) {
+                // do cleanup
+                this.cleanUpCurrentState();
+                this.currentCategory = categoryName;
                 // setup current word
                 const words = this.categories[categoryName];
                 const unguessedWords = words.filter(word => word.guessed === false);
@@ -126,6 +132,7 @@ export const useWordsStore = defineStore('words', {
         // clean up
         cleanUpCurrentState() {
             this.currentWord = null;
+            this.currentCategory = null;
             this.currentLetterArray = [];
             this.uniqueLetters = reactive(new Set());
             this.guessedLetters = reactive(new Set());
@@ -162,14 +169,28 @@ export const useWordsStore = defineStore('words', {
             else {
                 this.damagePlayer(this.uniqueLetters.size);
             }
-        }, 
+        },
+        guessWord(guessedWord: string) {
+            if (this.currentCategory == null || this.categories == null) return;
+            
+            for (let wordObj of this.categories[this.currentCategory]) {
+                if (wordObj.name === guessedWord) {
+                    wordObj.guessed = true;
+                    return;
+                }
+            }
+        },
         // Player state
         damagePlayer(currentLettersCount: number) {
             const { playAudio } = useAudioStore();
 
             this.isReceiveDamage = true;
             // calc 
-            const minusHealthPercent = this._maxPlayerHealth / currentLettersCount;
+            let minusHealthPercent = this._maxPlayerHealth / currentLettersCount;
+            if (minusHealthPercent > this.maxDamageToPlayer) {
+                minusHealthPercent = this.maxDamageToPlayer;
+            }
+
             playAudio('damageSound');
             this._currPlayerHealth -= minusHealthPercent;
             this.checkIfPlayerLose();
@@ -184,6 +205,9 @@ export const useWordsStore = defineStore('words', {
             if (isPlayerWin) {
                 // end of game
                 // timeout for smooth appearence of last letter
+                // add guessed word
+                this.guessWord(this.currentWord.name);
+
                 setTimeout(() => {
                     const { playAudio } = useAudioStore();
                     playAudio('winSound');
