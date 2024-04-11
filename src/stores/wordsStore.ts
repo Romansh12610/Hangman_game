@@ -42,7 +42,7 @@ export interface WordsStoreState {
     _isPlayerWin: boolean;
     _isPlayerLose: boolean;
     isReceiveDamage: boolean;
-    maxDamageToPlayer: number;
+    damageAmount: number;
     isGuessedLetter: boolean;
 };
 
@@ -60,7 +60,7 @@ export const useWordsStore = defineStore('words', {
         // player
         _maxPlayerHealth: 100,
         _currPlayerHealth: 100,
-        maxDamageToPlayer: 12,
+        damageAmount: 10,
         _isPlayerWin: false,
         _isPlayerLose: false,
         isReceiveDamage: false,
@@ -144,7 +144,7 @@ export const useWordsStore = defineStore('words', {
         // btn action
         guessLetter(letter: string) {
             // terminate if Lose or Win game
-            if (this._isPlayerLose || this._isPlayerWin) return;
+            if (this._isPlayerLose || this._isPlayerWin || this._currPlayerHealth <= 0) return;
             // if already guessed this letter
             if (this.guessedLetters.has(letter)) {
                 return;
@@ -167,7 +167,7 @@ export const useWordsStore = defineStore('words', {
             }
             // minus health
             else {
-                this.damagePlayer(this.uniqueLetters.size);
+                this.damagePlayer();
             }
         },
         guessWord(guessedWord: string) {
@@ -181,18 +181,13 @@ export const useWordsStore = defineStore('words', {
             }
         },
         // Player state
-        damagePlayer(currentLettersCount: number) {
+        damagePlayer() {
             const { playAudio } = useAudioStore();
 
             this.isReceiveDamage = true;
             // calc 
-            let minusHealthPercent = this._maxPlayerHealth / currentLettersCount;
-            if (minusHealthPercent > this.maxDamageToPlayer) {
-                minusHealthPercent = this.maxDamageToPlayer;
-            }
-
             playAudio('damageSound');
-            this._currPlayerHealth -= minusHealthPercent;
+            this._currPlayerHealth -= this.damageAmount;
             this.checkIfPlayerLose();
         },
         checkIfPlayerWin() {
@@ -223,7 +218,7 @@ export const useWordsStore = defineStore('words', {
                     const { playAudio } = useAudioStore();
                     playAudio('loseSound');
                     this._isPlayerLose = true;
-                }, 800);
+                }, 1000);
             };
         },
         checkIfEmptyState() {

@@ -5,7 +5,7 @@
 
     // init volume
     const { updateVolume } = useAudioStore();
-    updateVolume(0.75);
+    updateVolume(0.35);
 </script>
 
 <template>

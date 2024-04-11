@@ -10,11 +10,11 @@
     import Backdrop from './Backdrop.vue'
     import { useRouter } from 'vue-router'
 
-    type EndGameMode = 'lose' | 'win'
+    type EndGameMode = 'lose' | 'win';
 
     const props = defineProps<{
-        mode: EndGameMode
-        currentCategory: CategoryNames
+        mode: EndGameMode;
+        currentCategory: CategoryNames;
     }>()
 
     const renderWinSvg = computed(() => props.mode === 'win')
@@ -23,7 +23,7 @@
     // callbacks for btns
     const store = useWordsStore();
     function restartGame() {
-        store.setupCurrentWord(props.currentCategory)
+        store.setupCurrentWord(props.currentCategory);
     }
     
     const router = useRouter();

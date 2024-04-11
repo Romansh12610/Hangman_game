@@ -34,10 +34,10 @@
             }
 
             svgClass.damaged = true;
+            store.cancelDamageState();
             
             timerRef.value = setTimeout(() => {
                 svgClass.damaged = false;
-                store.cancelDamageState();
             }, durationOfAnimation.value);    
         }
     })
@@ -54,10 +54,10 @@
             }
 
             svgClass.guessed = true;
+            store.cancelGuessedState();
 
             timerRef.value = setTimeout(() => {
                 svgClass.guessed = false;
-                store.cancelGuessedState();
             }, durationOfAnimation.value);   
         }
     });

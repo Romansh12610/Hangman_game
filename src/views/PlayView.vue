@@ -11,6 +11,7 @@
     import EndGameModal from '@/components/EndGameModal.vue'
     import Spinner from '@/components/Spinner.vue'
     import Error from '@/components/Error.vue'
+    import HangCanvas from '@/components/HangCanvas.vue'
 
     interface RouteParams {
         category: CategoryNames
@@ -74,10 +75,15 @@
             :href="RoutePaths.ROOT"
         />
         <div v-else-if="isResult" class="play-section__main">
-            <!-- word displaing -->
-            <WordGuessed />
-            <!-- keyboard displaying -->
-            <Keyboard />
+            <div class="play-section__display">
+                <!-- word displaing -->
+                <WordGuessed />
+                <!-- keyboard displaying -->
+                <Keyboard />
+            </div>
+            <div class="play-section__cv-wrapper">
+                <HangCanvas />
+            </div>
         </div>
         <Spinner v-else="isLoading" />
         <!-- end game menu -->
@@ -120,9 +126,19 @@
             }
         }
 
+        // keyboard + hangCanvas wrapper
         &__main {
-            @include colFlex(flex-start, center, clamp(70px, 15vh, 100px));
-            margin-bottom: auto;
+            @include rowFlex(center, flex-start, 2.5vw);
+        }
+
+        // Word & keyboard
+        &__display {
+            flex-grow: 0.8;
+            @include colFlex(flex-start, center, clamp(50px, 5vh, 70px));
+        }
+
+        &__cv-wrapper {
+            flex-grow: 0.8;
         }
     }
 </style>
