@@ -26,7 +26,7 @@ export interface WordsStoreState {
     categories: CategoryData['categories'] | null;
     currentCategory: CategoryNames | null;
     currentWord: WordObject | null;
-    currentLetterArray: LetterArray;
+    currentLetterArray: LetterArray[];
     // for faster event handling
     // and comparing with 'guessed letters'
     uniqueLetters: Set<string>;
@@ -94,22 +94,40 @@ export const useWordsStore = defineStore('words', {
 
                 // setup current wordArray & uniq letter seq
                 const wordValue = randomWord.name;
-                for (const letter of wordValue) {
-                    this.currentLetterArray.push({
-                        value: letter,
-                        isGuessed: false,
-                        isSpace: letter === ' ',
-                    });
-                    
-                    const lowerCaseLetter = letter.toLowerCase();
-                    // do not add spaces to set!
-                    if (!this.uniqueLetters.has(lowerCaseLetter) && lowerCaseLetter !== ' ') {
-                        this.uniqueLetters.add(lowerCaseLetter);
-                    }
-                }
+                this.setupLetters(wordValue);
                 // setup keyboard
                 this.setupKeyboardLetters();
             }
+        },
+        setupLetters(word: string) {
+            console.log(word);
+            // starting from empty 1-d array
+            let currentSubArray: LetterArray = reactive([]);
+
+            for (let i = 0; i < word.length; ++i) {
+                const currentLetter = word[i];
+
+                if (currentLetter !== ' ') {
+                    currentSubArray.push({
+                        value: currentLetter,
+                        isGuessed: false,
+                        isSpace: false,
+                    });
+
+                    const lowerCasedLetter = currentLetter.toLowerCase();
+                    if (!this.uniqueLetters.has(lowerCasedLetter)) {
+                        this.uniqueLetters.add(lowerCasedLetter);
+                    }
+                } else {
+                    this.currentLetterArray.push(currentSubArray);
+                    currentSubArray = [];
+                }
+            }
+
+            if (currentSubArray.length > 0) {
+                this.currentLetterArray.push(currentSubArray);
+            }
+
         },
         // keyboard
         setupKeyboardLetters() {
@@ -158,9 +176,12 @@ export const useWordsStore = defineStore('words', {
                 this.isGuessedLetter = true;
                 playAudio('guessSound');
                 // open letter
-                for (const letterObj of this.currentLetterArray) {
-                    if (letterObj.value.toLowerCase() === letter) {
-                        letterObj.isGuessed = true;
+                for (const word of this.currentLetterArray) {
+                    // log
+                    for (const letterObj of word) {
+                        if (letterObj.value.toLowerCase() === letter) {
+                            letterObj.isGuessed = true;
+                        }
                     }
                 }
                 // check if win

@@ -37,8 +37,8 @@
         
         background-color: var(--blue-mid);
         border-radius: rem(20);
-        min-width: rem(62);
-        min-height: rem(80);
+        min-width: rem(60);
+        height: rem(80);
         padding: rem(8);
         overflow: hidden;
         border: rem(2) solid var(--blue-dark);

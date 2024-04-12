@@ -93,10 +93,12 @@
                     <!-- word displaing -->
                     <WordGuessed />
                     <!-- keyboard displaying -->
-                    <Keyboard />
                 </div>
                 <div class="play-section__cv-wrapper">
                     <HangCanvas />
+                </div>
+                <div class="play-section__keyboard">
+                    <Keyboard />
                 </div>
             </div>
             <Spinner v-else="isLoading" />
@@ -119,7 +121,7 @@
     @use 'ut' as *;
 
     .play-section {
-        @include colFlex(flex-start, flex-start, rem(80));
+        @include colFlex(flex-start, flex-start, rem(30));
         @include fadeTransitionBottomTop(800, 30);
         @include fadeTransitionTopBottom(800, -10);
 
@@ -145,18 +147,30 @@
 
         // keyboard + hangCanvas wrapper
         &__main {
+            width: 100%;
+            height: 100%;
             display: grid;
             grid-template-columns: repeat(2, 0.9fr);
+            grid-template-rows: 0.8fr 0.8fr;
             justify-content: space-between;
+            row-gap: rem(10);
+            flex-grow: 1;
         }
 
         // Word & keyboard
         &__display {
-            @include colFlex(center, center, clamp(50px, 5vh, 70px));
+            @include colFlex(flex-start, flex-start, clamp(50px, 5vh, 70px));
         }
 
         &__cv-wrapper {
             @include rowFlex(center, flex-start);
+        }
+
+        &__keyboard {
+            grid-column: 1 / 3;
+            grid-row: 2 / 3;
+            
+            @include colFlex(center, center);
         }
     }
 </style>
