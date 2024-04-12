@@ -52,6 +52,7 @@
             transform: translateY(150%);
             transition: transform 0.5s ease-in-out;
             opacity: 0;
+            user-select: none;
         }
 
         // letter displaying
