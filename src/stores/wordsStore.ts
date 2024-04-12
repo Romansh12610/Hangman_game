@@ -53,10 +53,10 @@ export const useWordsStore = defineStore('words', {
         categories: null,
         currentWord: null,
         currentCategory: null,
-        currentLetterArray: [],
-        uniqueLetters: new Set(),
-        guessedLetters: new Set(),
-        keyboardLetters: new Set(),
+        currentLetterArray: reactive([]),
+        uniqueLetters: reactive(new Set()),
+        guessedLetters: reactive(new Set()),
+        keyboardLetters: reactive(new Set()),
         // player
         _maxPlayerHealth: 100,
         _currPlayerHealth: 100,
@@ -134,8 +134,9 @@ export const useWordsStore = defineStore('words', {
             this.currentWord = null;
             this.currentCategory = null;
             this.currentLetterArray = [];
-            this.uniqueLetters = reactive(new Set());
-            this.guessedLetters = reactive(new Set());
+            this.uniqueLetters.clear();
+            this.guessedLetters.clear();
+            this.keyboardLetters.clear();
             // player
             this._currPlayerHealth = 100;
             this._isPlayerWin = false;

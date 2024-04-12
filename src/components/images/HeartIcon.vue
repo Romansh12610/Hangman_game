@@ -23,16 +23,16 @@
     const store = useWordsStore();
 
     watch(() => store.isReceiveDamage, () => {
-        if (store.isReceiveDamage && !svgClass.damaged) {
-            if (store.isGuessedLetter && svgClass.guessed) {
-                svgClass.guessed = false;
-                store.cancelGuessedState();
-            }
+        if (store.isReceiveDamage) {
             if (timerRef.value) {
                 clearTimeout(timerRef.value);
                 timerRef.value = null;
-            }
 
+                if (svgClass.guessed) {
+                    svgClass.guessed = false;
+                }
+            }
+            
             svgClass.damaged = true;
             store.cancelDamageState();
             
@@ -43,19 +43,19 @@
     })
 
     watch(() => store.isGuessedLetter, () => {
-        if (store.isGuessedLetter && !svgClass.guessed) {
-            if (store.isReceiveDamage && svgClass.damaged) {
-                store.cancelDamageState();
-                svgClass.damaged = false;
-            }
+        if (store.isGuessedLetter) {
             if (timerRef.value != null) {
                 clearTimeout(timerRef.value);
                 timerRef.value = null;
+
+                if (svgClass.damaged) {
+                    svgClass.damaged = false;
+                }
             }
 
             svgClass.guessed = true;
             store.cancelGuessedState();
-
+            
             timerRef.value = setTimeout(() => {
                 svgClass.guessed = false;
             }, durationOfAnimation.value);   

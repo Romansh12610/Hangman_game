@@ -54,10 +54,14 @@
         }
     });
 
-
     // for top wrapper animation
     const animateTB = ref(false);
     onMounted(() => animateTB.value = true);
+
+    // backlink navigation
+    function backlinkCallback() {
+        store.cleanUpCurrentState();
+    }
 </script>
 
 <template>
@@ -66,7 +70,10 @@
             <div class="play-section__top-wrapper" v-if="animateTB">
                 <!-- title zone: category + health -->
                 <div class="play-section__category">
-                    <BackLink :to="RoutePaths.PICK_CATEGORY" />
+                    <BackLink 
+                        :to="RoutePaths.PICK_CATEGORY" 
+                        @click-callback="backlinkCallback"
+                    />
                     <h2>{{ categoryName }}</h2>
                 </div>
 

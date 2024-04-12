@@ -4,10 +4,16 @@
     const props = defineProps({
         href: String,
     });
+
+    const emits = defineEmits(['click-callback']);
+
+    function handleClick() {
+        emits('click-callback');
+    }
 </script>
 
 <template>
-    <RouterLink class="back-link" :to="props.href">
+    <RouterLink class="back-link" :to="props.href" @click="handleClick">
         <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
         >
             <path d="M.49 8.446 8.582.361v5.21c3.118 0 9.353 2.193 9.353 10.96 0-4.743-6.235-5.689-9.353-5.57v5.57L.49 8.447Z" fill="#fff"/>
