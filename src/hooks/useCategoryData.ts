@@ -18,7 +18,6 @@ export const useCategoryData = async <ReturnData>(url: string, isLoading: Ref<bo
 
 async function fetchCategoryData(url: string) {
     const response = await fetch(url);
-    await new Promise(res => setTimeout(res, 650));
     const data = await response.json();
 
     return data;
