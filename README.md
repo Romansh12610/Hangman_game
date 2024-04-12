@@ -7,4 +7,4 @@ Rules are simple:
 Game currently works only with Firefox browser for reasons I can not know.
 It also suppose that you use desktop pc to play it (to have UI state correct).
 
-Try it: (hangman-game-blush.vercel.app)[Hangman-game]
+Try it: [hangman-game-blush.vercel.app](Hangman-game)
