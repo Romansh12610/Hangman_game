@@ -1,13 +1,11 @@
 import { defineStore } from "pinia";
 import { reactive } from "vue";
 
-const basePath = "/sounds";
-
 const audioPaths = {
-    WIN: `${basePath}/win.wav`,
-    LOSE: `${basePath}/lose.wav`,
-    DAMAGE: `${basePath}/damage.wav`,
-    GUESS: `${basePath}/guess.wav`,
+    WIN: `/sounds/win.wav`,
+    LOSE: `/sounds/lose.wav`,
+    DAMAGE: `/sounds/damage.wav`,
+    GUESS: `/sounds/guess.wav`,
 };
 
 interface AudioStoreState {
