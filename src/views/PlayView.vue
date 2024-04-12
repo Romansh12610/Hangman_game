@@ -71,7 +71,7 @@
                 <!-- title zone: category + health -->
                 <div class="play-section__category">
                     <BackLink 
-                        :to="RoutePaths.PICK_CATEGORY" 
+                        :href="RoutePaths.PICK_CATEGORY" 
                         @click-callback="backlinkCallback"
                     />
                     <h2>{{ categoryName }}</h2>

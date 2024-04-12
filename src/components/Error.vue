@@ -4,14 +4,17 @@
     const props = defineProps({
         parText: String,
         linkText: String,
-        href: String,
+        href: {
+            type: String,
+            required: true,
+        },
     });
 </script>
 
 <template>
     <div class="error">
         <p>{{ props.parText }}</p>
-        <LinkUnderlined :text="props.linkText" :to="props.href" />
+        <LinkUnderlined :text="props.linkText" :href="props.href" />
     </div>
 </template>
 

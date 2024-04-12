@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { reactive } from "vue";
 
-const basePath = "/src/assets/sounds";
+const basePath = "/sounds";
 
 const audioPaths = {
     WIN: `${basePath}/win.wav`,

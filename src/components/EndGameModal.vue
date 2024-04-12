@@ -8,7 +8,6 @@
     import { useWordsStore } from '@/stores/wordsStore'
     import type { CategoryNames } from '@/types/categoryData'
     import Backdrop from './Backdrop.vue'
-    import { useRouter } from 'vue-router'
 
     type EndGameMode = 'lose' | 'win';
 
@@ -26,10 +25,8 @@
         store.setupCurrentWord(props.currentCategory);
     }
     
-    const router = useRouter();
-    function cleanUpAndMove(url: string) {
+    function cleanUpCurrentWord() {
         store.cleanUpCurrentState();
-        router.push(url);
     }
 
     // for animation
@@ -49,19 +46,19 @@
                     <div class="menu_btns">
                         <BtnWithText
                             btn-text="Continue"
-                            :is-callback-btn="true"
                             @restart="restartGame"
+                            :href="RoutePaths.PLAY_SCREEN"
                         />
                         <BtnWithText 
                             btn-text="New Category" 
-                            :is-callback-btn="true"
-                            @restart="() => cleanUpAndMove(RoutePaths.PICK_CATEGORY)"
+                            @restart="cleanUpCurrentWord"
+                            :href="RoutePaths.PICK_CATEGORY"
                         />
                         <BtnWithText
                             btn-text="Quit game"
-                            :is-callback-btn="true"
-                            @restart="() => cleanUpAndMove(RoutePaths.ROOT)"
+                            @restart="cleanUpCurrentWord"
                             :is-quit-btn="true"
+                            :href="RoutePaths.ROOT"
                         />
                     </div>
                 </div>

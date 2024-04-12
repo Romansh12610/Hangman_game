@@ -100,7 +100,6 @@ export const useWordsStore = defineStore('words', {
             }
         },
         setupLetters(word: string) {
-            console.log(word);
             // starting from empty 1-d array
             let currentSubArray: LetterArray = reactive([]);
 

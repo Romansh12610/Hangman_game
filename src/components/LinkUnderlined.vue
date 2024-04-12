@@ -3,7 +3,10 @@
 
     const props = defineProps({
         text: String,
-        href: String,
+        href: {
+            type: String,
+            required: true,
+        },
     });
 </script>
 

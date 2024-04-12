@@ -2,7 +2,10 @@
     import { RouterLink } from 'vue-router';
 
     const props = defineProps({
-        href: String,
+        href: {
+            type: String,
+            required: true,
+        },
     });
 
     const emits = defineEmits(['click-callback']);

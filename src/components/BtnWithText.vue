@@ -5,9 +5,10 @@
     const props = defineProps({
         btnText: String,
         big: Boolean,
-        href: String,
-        // for callback attachment
-        isCallbackBtn: Boolean,
+        href: {
+            type: String,
+            required: true,
+        },
         // for styles
         isQuitBtn: Boolean,
     })
@@ -18,23 +19,15 @@
 
 <template>
     <RouterLink
-        v-if="!props.isCallbackBtn"
         class="btn"
         :data-mode="btnMode"
+        :data-quit="props.isQuitBtn"
         :to="href"
+        @click="$emit('restart')"
     >
         <p class="btn__text">{{ props.btnText }}</p>
     </RouterLink>
     <!-- if need restart game -->
-    <button
-        v-else-if="props.isCallbackBtn"
-        class="btn"
-        :data-mode="btnMode"
-        :data-quit="props.isQuitBtn"
-        @click="$emit('restart')"
-    >
-        <p class="btn__text">{{ props.btnText }}</p>
-    </button>
 </template>
 
 <style scoped lang="scss">
