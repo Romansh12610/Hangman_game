@@ -111,6 +111,19 @@ export class HangCanvas {
         this.ctx.lineWidth = this.lineWidth;
         this.ctx.beginPath();
         this.ctx.moveTo(this.startPosition.x, this.startPosition.y);
+
+        // initializing parts
+        this.initFirstLine();
+        this.initSecondLine();
+        this.initThirdLine();
+        this.initThirdLineAngle();
+        this.initFourthLine();
+        this.initHead();
+        this.initBody();
+        this.initLeftArm();
+        this.initRightArm();
+        this.initLeftLeg();
+        this.initRightLeg();
     }
 
     // init background
@@ -120,8 +133,8 @@ export class HangCanvas {
         this.ctx.save();
     }
 
-    drawFirstLine() {
-        const yValue = this.startPosition.y
+    initFirstLine() {
+        const yValue = this.startPosition.y;
 
         this.steps.line1 = new Line({
             x1: this.startPosition.x,
@@ -135,7 +148,9 @@ export class HangCanvas {
             isLeftToRight: true,
             isTopToBottom: true,
         });
+    }
 
+    drawFirstLine() {
         requestAnimationFrame(() => {
             if (this.steps.line1) {
                 this.steps.line1.draw(this.ctx);
@@ -143,7 +158,7 @@ export class HangCanvas {
         });
     }
 
-    drawSecondLine() {
+    initSecondLine() {
         const xValue = this.canvasWidth * 0.15;
 
         this.steps.line2 = new Line({
@@ -158,7 +173,9 @@ export class HangCanvas {
             isLeftToRight: true,
             isTopToBottom: false,
         });
+    }
 
+    drawSecondLine() {
         requestAnimationFrame(() => {
             if (this.steps.line2) {
                 this.steps.line2.draw(this.ctx);
@@ -166,7 +183,7 @@ export class HangCanvas {
         });
     }
 
-    drawThirdLine() {
+    initThirdLine() {
         const yValue = this.canvasHeight * 0.1;
 
         this.steps.line3 = new Line({
@@ -181,7 +198,9 @@ export class HangCanvas {
             isLeftToRight: true,
             isTopToBottom: true,
         });
+    }
 
+    drawThirdLine() {
         requestAnimationFrame(() => {
             if (this.steps.line3) {
                 this.steps.line3.draw(this.ctx);
@@ -189,7 +208,7 @@ export class HangCanvas {
         });
     }
 
-    drawThirdLineAngle() {
+    initThirdLineAngle() {
         const x = {
             start: this.canvasWidth * 0.15,
             end: this.canvasWidth * 0.25,
@@ -214,7 +233,9 @@ export class HangCanvas {
             isLeftToRight: true,
             isTopToBottom: false,
         });
+    }
 
+    drawThirdLineAngle() {
         requestAnimationFrame(() => {
             if (this.steps.line3Angle) {
                 this.steps.line3Angle.draw(this.ctx);
@@ -222,7 +243,7 @@ export class HangCanvas {
         });
     }
 
-    drawFourthLine() {
+    initFourthLine() {
         const xValue = this.canvasWidth * 0.75;
 
         this.steps.line4 = new Line({
@@ -237,7 +258,9 @@ export class HangCanvas {
             isLeftToRight: true,
             isTopToBottom: true,
         });
+    }
 
+    drawFourthLine() {
         requestAnimationFrame(() => {
             if (this.steps.line4) {
                 this.steps.line4.draw(this.ctx);
@@ -245,7 +268,7 @@ export class HangCanvas {
         });
     }
 
-    drawHead() { 
+    initHead() {
         this.steps.head = new Ellipse({
             x: this.canvasWidth * 0.75,
             y: this.canvasHeight * 0.3 + this.headRadius,
@@ -256,7 +279,9 @@ export class HangCanvas {
             strokeColor: colors['black'],
             clearColor: colors['white'],
         });
-        
+    }
+
+    drawHead() { 
         requestAnimationFrame(() => {
             if (this.steps.head) {
                 this.steps.head.draw(this.ctx);
@@ -264,7 +289,7 @@ export class HangCanvas {
         });
     }
 
-    drawBody() {
+    initBody() {
         this.steps.body = new Ellipse({
             x: this.canvasWidth * 0.75,
             y: (this.canvasHeight * 0.3 + this.headRadius * 2) + this.bodyRadius.y,
@@ -275,7 +300,9 @@ export class HangCanvas {
             strokeColor: colors['black'],
             clearColor: colors['white'],
         });
+    }
 
+    drawBody() {
         requestAnimationFrame(() => {
             if (this.steps.body) {
                 this.steps.body.draw(this.ctx);
@@ -283,12 +310,13 @@ export class HangCanvas {
         });
     }
 
-    drawLeftArm() {
+    initLeftArm() {
         const xStart = (this.canvasWidth * 0.75) - (this.bodyRadius.x * 0.95);
         const yStart = (this.canvasHeight * 0.3 + this.headRadius * 2) + (this.bodyRadius.y * 0.6);
         const slope = this.armLength.y / this.armLength.x;
         const xv = 2;
         const yv = 2 * slope;
+
 
         this.steps.leftArm = new Line({
             x1: xStart,
@@ -302,7 +330,9 @@ export class HangCanvas {
             isLeftToRight: false,
             isTopToBottom: true,
         });
+    }
 
+    drawLeftArm() {
         requestAnimationFrame(() => {
             if (this.steps.leftArm) {
                 this.steps.leftArm.draw(this.ctx);
@@ -310,14 +340,14 @@ export class HangCanvas {
         });
     }
 
-    drawRightArm() {
+    initRightArm() {
         const xStart = (this.canvasWidth * 0.75) + (this.bodyRadius.x * 0.95);
         const yStart = (this.canvasHeight * 0.3 + this.headRadius * 2) + (this.bodyRadius.y * 0.6);
         const slope = this.armLength.y / this.armLength.x;
         const xv = 2;
         const yv = 2 * slope;
 
-        this.steps.leftArm = new Line({
+        this.steps.rightArm = new Line({
             x1: xStart,
             y1: yStart,
             x2: xStart + this.armLength.x,
@@ -329,7 +359,9 @@ export class HangCanvas {
             isLeftToRight: true,
             isTopToBottom: true,
         });
+    }
 
+    drawRightArm() {
         requestAnimationFrame(() => {
             if (this.steps.rightArm) {
                 this.steps.rightArm.draw(this.ctx);
@@ -337,7 +369,7 @@ export class HangCanvas {
         });
     }
 
-    drawLeftLeg() {
+    initLeftLeg() {
         const xStart = (this.canvasWidth * 0.75) - (this.bodyRadius.x * 0.5);
         const yStart =  (this.canvasHeight * 0.3 + this.headRadius * 2) + (this.bodyRadius.y * 1.8);
         const slope = this.footLength.y / this.footLength.x;
@@ -354,7 +386,9 @@ export class HangCanvas {
             isLeftToRight: false,
             isTopToBottom: true,
         });
+    }
 
+    drawLeftLeg() {
         requestAnimationFrame(() => {
             if (this.steps.leftLeg) {
                 this.steps.leftLeg.draw(this.ctx);
@@ -362,12 +396,12 @@ export class HangCanvas {
         });
     }
 
-    drawRightLeg() {
+    initRightLeg() {
         const xStart = (this.canvasWidth * 0.75) + (this.bodyRadius.x * 0.5);
         const yStart =  (this.canvasHeight * 0.3 + this.headRadius * 2) + (this.bodyRadius.y * 1.8);
         const slope = this.footLength.y / this.footLength.x;
 
-        this.steps.leftLeg = new Line({
+        this.steps.rightLeg = new Line({
             x1: xStart,
             y1: yStart,
             x2: xStart + this.footLength.x,
@@ -379,7 +413,9 @@ export class HangCanvas {
             isLeftToRight: true,
             isTopToBottom: true,
         });
+    }
 
+    drawRightLeg() {
         requestAnimationFrame(() => {
             if (this.steps.rightLeg) {
                 this.steps.rightLeg.draw(this.ctx);

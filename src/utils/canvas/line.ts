@@ -53,10 +53,11 @@ export class Line {
         this.isDrawnToEnd = false;
     }
 
+    // test
     draw(ctx: CanvasRenderingContext2D) {
         this.clearLine(ctx);
         this.moveToCurrPos(ctx);
-
+        
         // X direction
         if (this.isLeftToRight) {
             if (this.currX < this.x2) {
@@ -98,7 +99,7 @@ export class Line {
     }
 
     getCurrentPos(): [x: number, y: number] {
-        return [this.currX, this.currY]
+        return [this.currX, this.currY];
     }
 
     clearLine(ctx: CanvasRenderingContext2D) {

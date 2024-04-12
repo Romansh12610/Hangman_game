@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { onMounted, onUnmounted, watch, shallowRef, ref } from 'vue';
+    import { onMounted, onUnmounted, watch, ref, shallowRef } from 'vue';
     import { HangCanvas } from '@/utils/canvas/hangCanvas';
     import { useWordsStore } from "@/stores/wordsStore";
     import { colors } from '@/utils/canvas/canvasUtils';
@@ -22,40 +22,45 @@
     }
 
     // watching health 
-    watch([() => store.playerHealth, () => store.isPlayerLose], () => {
+    watch(() => store.playerHealth, () => {
         if (hangCanvas.value === null) {
             return;
         }
 
-        if ((store.playerHealth < 100) && !hangCanvas.value.steps.line1?.isDrawnToEnd) {
+        // reset canvas
+        if (store.playerHealth === 100) {
+            hangCanvas.value.initSetup();
+        }
+
+        if ((store.playerHealth <= 90) && !hangCanvas.value.steps.line1?.isDrawnToEnd) {
             hangCanvas.value.drawFirstLine();
         }
-        if ((store.playerHealth <= 92) && !hangCanvas.value.steps.line2?.isDrawnToEnd) {
+        if ((store.playerHealth <= 80) && !hangCanvas.value.steps.line2?.isDrawnToEnd) {
             hangCanvas.value.drawSecondLine();
         }
-        if ((store.playerHealth <= 82) && (!hangCanvas.value.steps.line3?.isDrawnToEnd && !hangCanvas.value.steps.line3Angle?.isDrawnToEnd)) {
+        if ((store.playerHealth <= 70) && (!hangCanvas.value.steps.line3?.isDrawnToEnd && !hangCanvas.value.steps.line3Angle?.isDrawnToEnd)) {
             hangCanvas.value.drawThirdLine();
             hangCanvas.value.drawThirdLineAngle();
         }
-        if ((store.playerHealth <= 72) && (!hangCanvas.value.steps.line4?.isDrawnToEnd)) {
+        if ((store.playerHealth <= 60) && (!hangCanvas.value.steps.line4?.isDrawnToEnd)) {
             hangCanvas.value.drawFourthLine();
         }
-        if ((store.playerHealth <= 62) && (!hangCanvas.value.steps.head?.isDrawnToEnd)) {
+        if ((store.playerHealth  <= 50) && (!hangCanvas.value.steps.head?.isDrawnToEnd)) {
             hangCanvas.value.drawHead();
         }
-        if ((store.playerHealth <= 52) && (!hangCanvas.value.steps.body?.isDrawnToEnd)) {
+        if ((store.playerHealth <= 40) && (!hangCanvas.value.steps.body?.isDrawnToEnd)) {
             hangCanvas.value.drawBody();
         }
-        if ((store.playerHealth <= 42) && (!hangCanvas.value.steps.leftArm?.isDrawnToEnd)) {
+        if ((store.playerHealth <= 30) && (!hangCanvas.value.steps.leftArm?.isDrawnToEnd)) {
             hangCanvas.value.drawLeftArm();
         }
-        if ((store.playerHealth <= 32) && (!hangCanvas.value.steps.rightArm?.isDrawnToEnd)) {
+        if ((store.playerHealth <= 20) && (!hangCanvas.value.steps.rightArm?.isDrawnToEnd)) {
             hangCanvas.value.drawRightArm();
         }
-        if ((store.playerHealth <= 22) && (!hangCanvas.value.steps.leftLeg?.isDrawnToEnd)) {
+        if ((store.playerHealth <= 10) && (!hangCanvas.value.steps.leftLeg?.isDrawnToEnd)) {
             hangCanvas.value.drawLeftLeg();
         }
-        if ((store.playerHealth <= 12) && (!hangCanvas.value.steps.rightLeg?.isDrawnToEnd)) {
+        if ((store.playerHealth <= 0) && (!hangCanvas.value.steps.rightLeg?.isDrawnToEnd)) {
             hangCanvas.value.drawRightLeg();
         }
     });

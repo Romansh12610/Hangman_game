@@ -54,7 +54,7 @@
                     />
                     <BtnWithText
                         btn-text="Quit game"
-                        is-callback-btn="true"
+                        :is-callback-btn="true"
                         @restart="() => cleanUpAndMove(RoutePaths.ROOT)"
                         :is-quit-btn="true"
                     />
