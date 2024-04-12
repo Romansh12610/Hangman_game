@@ -48,6 +48,7 @@
         border: rem(2.5) solid var(--blue-dark);
         background-color: var(--blue-light);
         transition: box-shadow 0.4s ease-in-out;
+        z-index: 10;
 
         & > .btn__text {
             @include fontDefault;

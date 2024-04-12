@@ -56,6 +56,44 @@
     }
 }
 
+@mixin fadeTransitionBottomTop($durationMs: 500, $translateYVh: 30) {
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: all #{$durationMs}#{ms} ease-in-out;
+    }
+    
+    .fade-enter-to,
+    .fade-leave-from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    .fade-enter-from,
+    .fade-leave-to {
+        opacity: 0;
+        transform: translateY(#{$translateYVh}#{vh}) scale(0);
+    }
+}
+
+@mixin fadeTransitionTopBottom($durationMs: 500, $translateYVh: -30) {
+    .fadeTB-enter-active,
+    .fadeTB-leave-active {
+        transition: all #{$durationMs}#{ms} ease-in-out;
+    }
+    
+    .fadeTB-enter-to,
+    .fadeTB-leave-from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    .fadeTB-enter-from,
+    .fadeTB-leave-to {
+        opacity: 0;
+        transform: translateY(#{$translateYVh}#{vh}) scale(0);
+    }
+}
+
 // components
 @mixin btn_shadow_border($yOffset, $xOffset, $bg_color_var: --pink, $shadow_color_var: --blue-light-op, $border_color_var: --blue-dark) {
 
@@ -63,7 +101,7 @@
     border: rem(3) solid var(#{$border_color_var});
     border-bottom-width: rem(10);
     box-shadow: inset #{$xOffset}#{px} #{$yOffset}#{px} 5px 2px var(#{$shadow_color_var});
-    transition: transform 0.48s ease-in-out, box-shadow 0.48s ease-in-out, border 0.48s ease-in-out, border-width 0.48s ease-in-out;
+    transition: transform 0.48s ease-in-out, box-shadow 0.48s ease-in-out, border 0.48s ease-in-out;
     
     // hover state
     &:hover {

@@ -32,31 +32,39 @@
                 isError
             )
         }
-    })
+    });
+
+    // for top wrapper animation
+    const animateTB = ref(false);
+    onMounted(() => animateTB.value = true);
 </script>
 
 <template>
     <section class="pick-section">
-        <div class="pick-section__title">
-            <BackLink :href="RoutePaths.ROOT" />
-            <PickCategory scale="2.6" />
-        </div>
-        <div class="pick-section__result-wrapper">
-            <Spinner v-if="isLoading" />
-            <Error
-                v-else-if="isError"
-                par-text="Error was occured"
-                link-text="To home page"
-                :href="RoutePaths.ROOT"
-            />
-            <div v-else-if="isResult" class="pick-section__categories">
-                <BtnWithText
-                    v-for="categoryName in store.categoryNames"
-                    :btn-text="categoryName"
-                    :href="`/play/${categoryName}`"
-                    big
-                />
+        <Transition name="fadeTB">
+            <div class="pick-section__title" v-if="animateTB">
+                <BackLink :href="RoutePaths.ROOT" />
+                <PickCategory scale="2.6" />
             </div>
+        </Transition>
+        <div class="pick-section__result-wrapper">
+            <Transition name="fade">
+                <Spinner v-if="isLoading" />
+                <Error
+                    v-else-if="isError"
+                    par-text="Error was occured"
+                    link-text="To home page"
+                    :href="RoutePaths.ROOT"
+                />
+                <div v-else-if="isResult" class="pick-section__categories">
+                    <BtnWithText
+                        v-for="categoryName in store.categoryNames"
+                        :btn-text="categoryName"
+                        :href="`/play/${categoryName}`"
+                        big
+                    />
+                </div>
+            </Transition>
         </div>
     </section>
 </template>
@@ -65,20 +73,24 @@
     @use 'ut' as *;
     .pick-section {
         @include colFlex(center, flex-start, 20vh);
+        @include fadeTransitionBottomTop(800, 30);
+        @include fadeTransitionTopBottom(800, -10);
 
-        margin: rem(30) rem(35) 0;
-        width: max(1030px, 100%);
+        overflow: visible;
+        width: 100%;
         min-height: 100vh;
+        padding-top: rem(30);
+        padding-inline: 8vw;
         position: relative;
 
         &__title {
             @include rowFlex(center, center);
             position: relative;
-            width: 85%;
+            width: 100%;
 
             & a {
                 position: absolute;
-                left: -10px;
+                left: 10vw;
             }
 
             & svg {

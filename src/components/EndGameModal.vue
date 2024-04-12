@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { computed } from 'vue'
+    import { computed, onMounted, ref } from 'vue'
     import MenuModal from './MenuModal.vue'
     import YouLose from './images/YouLose.vue'
     import YouWin from './images/YouWin.vue'
@@ -31,36 +31,42 @@
         store.cleanUpCurrentState();
         router.push(url);
     }
+
+    // for animation
+    const animate = ref(false);
+    onMounted(() => animate.value = true);
 </script>
 
 <template>
     <Teleport to="body">
-        <MenuModal>
-            <div class="container">
-                <div class="svg_wrapper">
-                    <YouLose v-if="renderLoseSvg" scale="1.4" />
-                    <YouWin v-else-if="renderWinSvg" scale="1.4" />
+        <Transition name="fade">
+            <MenuModal v-if="animate">
+                <div class="container">
+                    <div class="svg_wrapper">
+                        <YouLose v-if="renderLoseSvg" scale="1.4" />
+                        <YouWin v-else-if="renderWinSvg" scale="1.4" />
+                    </div>
+                    <div class="menu_btns">
+                        <BtnWithText
+                            btn-text="Continue"
+                            :is-callback-btn="true"
+                            @restart="restartGame"
+                        />
+                        <BtnWithText 
+                            btn-text="New Category" 
+                            :is-callback-btn="true"
+                            @restart="() => cleanUpAndMove(RoutePaths.PICK_CATEGORY)"
+                        />
+                        <BtnWithText
+                            btn-text="Quit game"
+                            :is-callback-btn="true"
+                            @restart="() => cleanUpAndMove(RoutePaths.ROOT)"
+                            :is-quit-btn="true"
+                        />
+                    </div>
                 </div>
-                <div class="menu_btns">
-                    <BtnWithText
-                        btn-text="Continue"
-                        :is-callback-btn="true"
-                        @restart="restartGame"
-                    />
-                    <BtnWithText 
-                        btn-text="New Category" 
-                        :is-callback-btn="true"
-                        @restart="() => cleanUpAndMove(RoutePaths.PICK_CATEGORY)"
-                    />
-                    <BtnWithText
-                        btn-text="Quit game"
-                        :is-callback-btn="true"
-                        @restart="() => cleanUpAndMove(RoutePaths.ROOT)"
-                        :is-quit-btn="true"
-                    />
-                </div>
-            </div>
-        </MenuModal>
+            </MenuModal>
+        </Transition>
         <Backdrop />
     </Teleport>
 </template>
@@ -81,4 +87,7 @@
     .menu_btns {
         @include colFlex(center, center, rem(30));
     }
+
+    // End game animation
+    @include fadeTransitionBottomTop(800, 30);
 </style>

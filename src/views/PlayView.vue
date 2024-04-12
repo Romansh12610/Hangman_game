@@ -54,38 +54,46 @@
         }
     });
 
+
+    // for top wrapper animation
+    const animateTB = ref(false);
+    onMounted(() => animateTB.value = true);
 </script>
 
 <template>
     <section class="play-section">
-        <div class="play-section__top-wrapper">
-            <!-- title zone: category + health -->
-            <div class="play-section__category">
-                <BackLink :to="RoutePaths.PICK_CATEGORY" />
-                <h2>{{ categoryName }}</h2>
-            </div>
+        <Transition name="fadeTB">
+            <div class="play-section__top-wrapper" v-if="animateTB">
+                <!-- title zone: category + health -->
+                <div class="play-section__category">
+                    <BackLink :to="RoutePaths.PICK_CATEGORY" />
+                    <h2>{{ categoryName }}</h2>
+                </div>
 
-            <Healthbar />
-        </div>
+                <Healthbar />
+            </div>
+        </Transition>
 
-        <Error
-            v-if="isError"
-            par-text="Error happened..."
-            link-text="To home page"
-            :href="RoutePaths.ROOT"
-        />
-        <div v-else-if="isResult" class="play-section__main">
-            <div class="play-section__display">
-                <!-- word displaing -->
-                <WordGuessed />
-                <!-- keyboard displaying -->
-                <Keyboard />
+        <Transition name="fade">
+            <Error
+                v-if="isError"
+                par-text="Error happened..."
+                link-text="To home page"
+                :href="RoutePaths.ROOT"
+            />
+            <div v-else-if="isResult" class="play-section__main">
+                <div class="play-section__display">
+                    <!-- word displaing -->
+                    <WordGuessed />
+                    <!-- keyboard displaying -->
+                    <Keyboard />
+                </div>
+                <div class="play-section__cv-wrapper">
+                    <HangCanvas />
+                </div>
             </div>
-            <div class="play-section__cv-wrapper">
-                <HangCanvas />
-            </div>
-        </div>
-        <Spinner v-else="isLoading" />
+            <Spinner v-else="isLoading" />
+        </Transition>
         <!-- end game menu -->
         <EndGameModal
             v-if="store.isPlayerWin"
@@ -105,12 +113,14 @@
 
     .play-section {
         @include colFlex(flex-start, flex-start, rem(80));
+        @include fadeTransitionBottomTop(800, 30);
+        @include fadeTransitionTopBottom(800, -10);
 
-        padding-top: rem(30);
         overflow: visible;
         width: 100%;
         min-height: 100vh;
-        padding-inline: 5vw;
+        padding-top: rem(30);
+        padding-inline: 8vw;
 
         &__top-wrapper {
             @include rowFlex(space-between, center);
@@ -128,17 +138,18 @@
 
         // keyboard + hangCanvas wrapper
         &__main {
-            @include rowFlex(center, flex-start, 2.5vw);
+            display: grid;
+            grid-template-columns: repeat(2, 0.9fr);
+            justify-content: space-between;
         }
 
         // Word & keyboard
         &__display {
-            flex-grow: 0.8;
-            @include colFlex(flex-start, center, clamp(50px, 5vh, 70px));
+            @include colFlex(center, center, clamp(50px, 5vh, 70px));
         }
 
         &__cv-wrapper {
-            flex-grow: 0.8;
+            @include rowFlex(center, flex-start);
         }
     }
 </style>

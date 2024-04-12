@@ -54,7 +54,6 @@ export class Ellipse {
     }
 
     draw(ctx: CanvasRenderingContext2D) {
-        this.clearEllipse(ctx);
         this.moveToStart(ctx);
         ctx.strokeStyle = this.strokeColor;
 
@@ -86,10 +85,10 @@ export class Ellipse {
         ctx.moveTo(this.startPosition.x, this.startPosition.y);
     }
     
-    clearEllipse(ctx: CanvasRenderingContext2D) {
+    /* clearEllipse(ctx: CanvasRenderingContext2D) {
         ctx.fillStyle = this.clearColor;
         ctx.fillRect(this.x - this.radiusX, this.y - this.radiusY, this.x + this.radiusX, this.y + this.radiusY);
-    }
+    } */
 
     degToRad(angleDeg: number) {
         return angleDeg * Math.PI / 180;
