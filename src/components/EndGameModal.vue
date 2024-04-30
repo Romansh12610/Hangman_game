@@ -81,6 +81,7 @@
 
     .container {
         @include colFlex(center, center);
+        padding-inline: rem(30);
     }
     .svg_wrapper {
         position: absolute;
@@ -93,8 +94,9 @@
         @include colFlex(center, center, rem(20));
         margin-top: rem(70);
         & > .guessed_word {
-            @include fontDefault(55);
-            letter-spacing: rem(2.5);
+            @include fontDefault(48);
+            user-select: none;
+            letter-spacing: rem(2);
             color: var(--white);
             line-height: 1.25;
 

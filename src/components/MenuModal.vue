@@ -13,8 +13,8 @@
         @include colFlex(center);
 
         position: absolute;
-        width: rem(650);
-        height: rem(480);
+        min-width: rem(650);
+        min-height: rem(480);
         top: calc(50% - (rem(650) / 2.5));
         left: calc(50% - (rem(480) / 1.5));
         background: linear-gradient(to bottom, var(--blue-mid-op), var(--blue-dark-op));

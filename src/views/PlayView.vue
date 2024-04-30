@@ -110,7 +110,7 @@
             :current-category="categoryName"
         />
         <EndGameModal
-            v-else-if="store.isPlayerLose"
+            v-else-if="true"
             mode="lose"
             :current-category="categoryName"
         />
