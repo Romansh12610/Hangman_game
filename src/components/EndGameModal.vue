@@ -32,6 +32,8 @@
     // for animation
     const animate = ref(false);
     onMounted(() => animate.value = true);
+
+    const shouldShowWord = computed(() => props.mode === 'lose' && store.currentWord != null);
 </script>
 
 <template>
@@ -44,6 +46,12 @@
                         <YouWin v-else-if="renderWinSvg" scale="1.4" />
                     </div>
                     <div class="menu_btns">
+                        <p 
+                            class="guessed_word"
+                            v-if="shouldShowWord"
+                            >The word was: 
+                            <span>{{ store.currentWord?.name }}</span>
+                        </p>
                         <BtnWithText
                             btn-text="Continue"
                             @restart="restartGame"
@@ -72,17 +80,29 @@
     @use 'ut' as *;
 
     .container {
-        @include colFlex(center, center, rem(30));
+        @include colFlex(center, center);
     }
     .svg_wrapper {
-        position: relative;
+        position: absolute;
         top: 0;
         left: 50%;
         transform: translate(-50%, -50%);
     }
 
     .menu_btns {
-        @include colFlex(center, center, rem(30));
+        @include colFlex(center, center, rem(20));
+        margin-top: rem(70);
+        & > .guessed_word {
+            @include fontDefault(55);
+            letter-spacing: rem(2.5);
+            color: var(--white);
+            line-height: 1.25;
+
+            & > span {
+                color: var(--pink);
+                font-size: rem(20, em);
+            }
+        }
     }
 
     // End game animation
